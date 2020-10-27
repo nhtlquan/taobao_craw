@@ -1,0 +1,335 @@
+
+
+function removeElement(){
+    var count = 0;
+    var interval;
+    if(interval !== null){
+        clearInterval(interval);
+        interval = null;
+    }
+    interval = setInterval(function(){
+        if(count == 20){
+            clearInterval(interval);
+            count = 0;
+        }else{
+            count = count + 1;
+            document.getElementsByClassName('_1DrF-Ndoxy1b882RZcUtzX _1bKOWZpFDSZMyGm5qZHZAU')[0].remove();
+        }
+    },200);
+}
+
+
+function changeData1688(){
+    var count = 0;
+        var interval;
+        if(interval !== null){
+            clearInterval(interval);
+            interval = null;
+        }
+        interval = setInterval(function(){
+            if(count == 20){
+                clearInterval(interval);
+                count = 0;
+            }else{
+                count = count + 1;
+                document.getElementsByClassName('takla-item-text J_SkuBtnText')[0].textContent =
+                'CHON MAU SAC - KICH CO';
+            }
+        },200);
+}
+
+function openPopupProperty1688(){
+ document.getElementsByClassName('takla-item-text J_SkuBtnText')[0].click();
+}
+
+function  openPopupPropertyTaobao(){
+    var subTitleCount = document.getElementsByClassName('card-subtitle').length;
+                   if(subTitleCount === 3){
+                       document.getElementsByClassName('card-subtitle')[1].click();
+                   }else{
+                       document.getElementsByClassName('card-subtitle')[0].click();
+                   }
+}
+
+function changeDataTaobao(){
+    var count = 0;
+        var interval;
+        if(interval !== null){
+            clearInterval(interval);
+            interval = null;
+        }
+        interval = setInterval(function(){
+            if(count == 20){
+                clearInterval(interval);
+                count = 0;
+            }else{
+               count = count + 1;
+                var subTitleCount = document.getElementsByClassName('card-subtitle').length;
+                if(subTitleCount === 3){
+                    document.getElementsByClassName('card-subtitle')[1].innerHTML = 'CHON MAU SAC - KICH CO';
+                    document.getElementsByClassName('card-subtitle')[2].innerText = 'THONG TIN CHI TIET SAN PHAM';
+                }else{
+                    document.getElementsByClassName('card-subtitle')[0].innerHTML = 'CHON MAU SAC - KICH CO';
+                    document.getElementsByClassName('card-subtitle')[1].innerText = 'THONG TIN CHI TIET SAN PHAM';
+                }
+            }
+        },200);
+}
+
+function removeElementTmall(){
+    var count = 0;
+    var interval;
+    if(interval !== null){
+        clearInterval(interval);
+        interval = null;
+    }
+    interval = setInterval(function(){
+        if(count == 20){
+            clearInterval(interval);
+            count = 0;
+        }else{
+            count = count + 1;
+            document.getElementsByClassName('_1U0GDtO1C7dAkY5Dds1nKD _3gdW50aaCACeVr7LmzaPvq')[0].remove();
+        }
+    },200);
+}
+
+function getDetailsInfomation(){
+    var count = 0;
+    var interval;
+    if(interval !== null){
+        clearInterval(interval);
+        interval = null;
+    }
+    interval = setInterval(function(){
+        if(count == 100){
+            clearInterval(interval);
+            count = 0;
+        }else{
+            count = count + 1;
+            var dataValue = "";
+            var property = "";
+            var lengthModal = "";
+            var modelItemPidLength = document.getElementsByClassName('modal-sku-content').length;
+            var lengthModalNoActive = document.getElementsByClassName('modal-sku-content-item').length;
+
+
+            lengthModal = document.getElementsByClassName('modal-sku-content-item modal-sku-content-item-active').length;
+            if(lengthModal > 0){
+                for(var i = 0 ; i < lengthModal; i++){
+                 var separate = "";
+                                     if(i==lengthModal-1){
+                                     separate = "";
+                                     }else{
+                                     separate =";";
+                                     }
+                    property = property  + document.getElementsByClassName('modal-sku-content-item modal-sku-content-item-active')[i].textContent + separate;
+                    dataValue = dataValue  + document.getElementsByClassName('modal-sku-content')[i].getAttribute('data-pid') + ":"+document.getElementsByClassName('modal-sku-content-item modal-sku-content-item-active')[i].getAttribute('data-vid')+separate;
+                }
+            }
+
+
+            if(lengthModalNoActive > 0){
+                if(property.length === 0){
+                    property = "1";
+                }
+            }else{
+                property = "0";
+            }
+            var data = {
+                "dataValue": dataValue,
+                "image_origin" : document.getElementsByClassName('mui-lazy slick-image')[0].src,
+                "image_model" : document.getElementsByClassName('modal-sku-image')[0].getElementsByTagName('img')[0].src,
+                "price_origin" : document.getElementsByClassName('modal-sku-title-price')[0].textContent,
+                "price_promotion" : document.getElementsByClassName('modal-sku-title-price')[0].textContent,
+                "property" : property,
+                "quantity" : document.getElementsByClassName('sku-number-edit')[0].getAttribute('value'),
+                "title_origin" : document.getElementsByClassName('title')[0].textContent,
+                "shop_name" : document.getElementsByClassName('shop-title')[0].textContent,
+                "shop_title_wrapper" : document.getElementsByClassName('shop-title-wrapper')[0].getAttribute('href'),
+                "wangwang" : document.getElementsByClassName('bar-item')[0].getElementsByTagName('span')[0].textContent,
+
+            }
+            var s = JSON.stringify(data);
+            if(s.length === 0){
+            }else{
+               Android.postMessage(s);
+               clearInterval(interval);
+               count = 0;
+            }
+
+
+        }
+    },200);
+}
+
+function getDetailsInfomation1688(){
+
+    var count = 0;
+    var interval;
+    if(interval !== null){
+        clearInterval(interval);
+        interval = null;
+    }
+    interval = setInterval(function(){
+        if(count == 100){
+            clearInterval(interval);
+            count = 0;
+        }else{
+                  try {
+                        count = count + 1;
+                        var property = "";
+                        var lengthModal = "";
+                        var primary_image = "";
+                        var lengthModalCheck = "";
+                        var lengthModalActive = "";
+                        var lengthModal = document.getElementsByClassName('takla-wap-b2b-skuselector-component').length;
+                        var lengthModalActive = document.getElementsByClassName('selected-count J_SelectedCount').length;
+                        var lengthQuantity = 0;
+                        var price_origin="";
+                        var lengcolor = document.getElementsByTagName('sku-1st-prop-item J_SkuSelector_1st_PropItem').length + 1;
+                        var lengthQuantity = document.getElementsByTagName('amount-btn amount-down-btn  J_SkuItem_AmountDownBtn').length;
+                        if(lengthModal > 0){
+                            for(var i = 0 ; i < lengthModalActive ; i++){
+                                lengthQuantity= document.getElementsByClassName('amount-num J_SelectedTotalAmount')[0].textContent;
+                                price_origin= document.getElementsByClassName('selector-price-item J_SkuPriceItem active-price')[0].getElementsByClassName("price-show-price")[0].getElementsByTagName("span")[0].textContent;
+                                if (document.getElementsByClassName('takla-item-text J_SkuBtnText')[0].textContent != 'CHON MAU SAC - KICH CO'){
+                                property =  document.getElementsByClassName('takla-item-text J_SkuBtnText')[0].textContent;
+                                }
+                            }
+                        }
+
+                      // get price table
+                      var json = document.querySelector('#widget-wap-detail-common-price script').innerText
+                      var obj = JSON.parse(json);
+                      var dataRange = obj.showPriceRanges;
+                } catch (e) {
+                  console.log(e);
+                }
+
+                  try{
+                       var itemBlocks = document.querySelectorAll('.sku-2nd-prop-list>li');
+                       var orders = [];
+                       var color = "";
+                       var queryColor = document.querySelector('li.sku-1st-prop-item.J_SkuSelector_1st_PropItem.active-sku-item>a');
+                       if(queryColor !== null || queryColor !== undefined){
+                          color = document.querySelector('li.sku-1st-prop-item.J_SkuSelector_1st_PropItem.active-sku-item>a').innerText;
+                          }
+                       for (let i = 0; i < itemBlocks.length; i++) {
+                        let size = "";
+                        let sizeQuery = itemBlocks[i].querySelector('.main-text');
+                        let itemNumbers = "";
+                        let itemNumbersQuery = itemBlocks[i].querySelector('input.amount-input.J_SkuItem_AmountInput');
+                        let price = "";
+                        let priceQuery = itemBlocks[i].querySelector('.price-text');
+                        if(itemNumbersQuery!==null && itemNumbersQuery!== undefined ){
+                        itemNumbers = itemBlocks[i].querySelector('input.amount-input.J_SkuItem_AmountInput').value;
+                         }
+                         if(priceQuery !== null && price !== undefined){
+                         price = itemBlocks[i].querySelector('.price-text').innerText;
+                         }
+                         if(sizeQuery!==null && sizeQuery!==undefined){
+                         size = itemBlocks[i].querySelector('.main-text').innerText;
+                         }
+                         let order = {
+                         "size": size,
+                         "count": itemNumbers,
+                         "price": price,
+                         "color": color
+                          }
+                          if(order.count !== "0"){
+                          orders.push(order);
+                          }
+
+                          }
+                   } catch (e){
+                    console.log(e);
+                   }
+
+            // get property product
+            var image = "";
+            try {
+              var imageQuery = document.querySelector('.selector-current-image .image-container img');
+              if(imageQuery !== null && imageQuery !== undefined){
+                image = document.querySelector('.selector-current-image .image-container img').getAttribute('src');
+              }
+            } catch (e){
+                console.log(e)
+            }
+            if(lengthModal > 0){
+
+            }else{
+                price_origin = "0";
+                quantity = "0";
+                property = "";
+
+            }
+
+            var imageOrigin = "";
+            try {
+                imageOrigin = document.getElementsByClassName('shop-logo-container')[0].getElementsByTagName('img')[0].src;
+            }catch(e){
+                console.log(e)
+            }
+            var shopName = "";
+            try {
+                shopName = document.getElementsByClassName('takla-item-text shop-name-text')[0].getElementsByTagName("span")[0].textContent;
+            }catch(e){
+             console.log(e)
+            }
+            var titleOrigin = "";
+            try {
+                titleOrigin = document.getElementsByTagName('title')[0].textContent;
+            } catch (e){
+             console.log(e)
+            }
+
+            var itemId = "";
+            try {
+                itemId = document.getElementsByTagName('input')[6].getAttribute('value');
+            } catch (e){
+              console.log(e)
+            }
+
+            var shopId = "";
+            try {
+                shopId = document.getElementsByClassName('takla-wap-dpl-box module-wap-detail-common-comment')[0].getElementsByTagName('script')[0].textContent;
+            } catch (e){
+              console.log(e)
+            }
+
+            var wangWang = "";
+            try {
+                wangWang = document.getElementsByClassName("btn-text")[2].textContent;
+            } catch (e){
+              console.log(e)
+            }
+
+
+            var data = {
+            "dataValue": dataRange,
+            "image_origin" : imageOrigin,
+            "image_model" : image,
+            "price_origin" : price_origin,
+            "price_promotion" : price_origin,
+            "property" : orders,
+            "quantity" : lengthQuantity,
+            "title_origin" : titleOrigin,
+            "shop_name" : shopName,
+            "item_id" :  itemId,
+            "shop_id" : shopId,
+            "wangwang" : wangWang
+            }
+
+
+            var s = JSON.stringify(data);
+            if(s.length === 0){
+
+            }else{
+                Android.postMessage(s);
+               clearInterval(interval);
+               count = 0;
+            }
+        }
+    },200);
+}

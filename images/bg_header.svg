@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="374" height="232" viewBox="0 0 103 74">
+    <defs>
+        <radialGradient id="55qu6o5xad" cx="46.379%" cy="50%" r="65.904%" fx="46.379%" fy="50%" gradientTransform="scale(.71845 1) rotate(43.48 .555 .728)">
+            <stop offset="0%" stop-color="#FFF" stop-opacity="0"/>
+            <stop offset="100%" stop-color="#B4B3FF"/>
+        </radialGradient>
+        <radialGradient id="tylfh3bl8e" cx="46.379%" cy="50%" r="66.55%" fx="46.379%" fy="50%" gradientTransform="scale(.70538 1) rotate(42.956 .56 .746)">
+            <stop offset="0%" stop-color="#FFF" stop-opacity="0"/>
+            <stop offset="100%" stop-color="#B4B3FF"/>
+        </radialGradient>
+        <linearGradient id="7l1gg69vka" x1="-27.947%" x2="214.858%" y1="9.208%" y2="130.865%">
+            <stop offset="0%" stop-color="#6F93EF"/>
+            <stop offset="100%" stop-color="#01196D"/>
+        </linearGradient>
+        <rect id="z8wkucrkeb" width="103" height="74" x="0" y="0"/>
+    </defs>
+    <g fill="none" fill-rule="evenodd">
+        <g>
+            <g transform="translate(-256 -158) translate(256 158)">
+                <rect width="103" height="74" fill="url(#7l1gg69vka)"/>
+                <g opacity=".527">
+                    <mask id="qvezl5nnwc" fill="#fff">
+                        <use xlink:href="#z8wkucrkeb"/>
+                    </mask>
+                    <g mask="url(#qvezl5nnwc)" opacity=".202">
+                        <g transform="translate(-34.797 -35)">
+                            <ellipse fill="url(#55qu6o5xad)" style="mix-blend-mode:soft-light" cx="55.89" cy="40.154" rx="55.89" ry="40.154"/>
+                            <ellipse fill="url(#tylfh3bl8e)" style="mix-blend-mode:soft-light" cx="129.446" cy="105" rx="76.554" ry="54"/>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
