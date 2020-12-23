@@ -1,10 +1,17 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_app_test/signup.dart';
 import 'package:flutter_app_test/utils/CustomBorder.dart';
 import 'package:flutter_app_test/utils/CustomColors.dart';
 import 'package:flutter_app_test/utils/CustomTextStyle.dart';
 import 'package:flutter_app_test/utils/CustomUtils.dart';
+import 'package:flutter_app_test/widgets/PageWidget.dart';
+import 'package:rxdart/rxdart.dart';
 
+import 'ResourceUtil.dart';
+import 'Util/Util.dart';
+import 'helper/ApiService.dart';
 import 'home.dart';
 
 class Login extends StatefulWidget {
@@ -13,12 +20,25 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
+  var _isLoadingSubject = BehaviorSubject<bool>.seeded(false);
+
+  Stream get isLoadingStream => _isLoadingSubject.stream;
+
+  TextEditingController loginEmailController = new TextEditingController(text: '');
+  TextEditingController loginPasswordController = new TextEditingController(text: '');
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    _isLoadingSubject.close();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      resizeToAvoidBottomPadding: false,
-      body: Builder(builder: (context) {
+    return PageWidget(
+      streamLoading: isLoadingStream,
+      child: Builder(builder: (context) {
         return Container(
           width: double.infinity,
           child: Column(
@@ -38,6 +58,7 @@ class _LoginState extends State<Login> {
                   child: Column(
                     children: <Widget>[
                       TextFormField(
+                        controller:loginEmailController,
                         decoration: InputDecoration(
                             prefixIcon: Icon(Icons.people),
                             contentPadding: EdgeInsets.fromLTRB(16, 16, 16, 12),
@@ -52,6 +73,7 @@ class _LoginState extends State<Login> {
                       ),
                       Utils.getSizedBox(height: 20),
                       TextFormField(
+                        controller:loginPasswordController,
                         decoration: InputDecoration(
                             prefixIcon: Icon(Icons.lock),
                             contentPadding: EdgeInsets.fromLTRB(16, 16, 16, 12),
@@ -70,10 +92,7 @@ class _LoginState extends State<Login> {
                         width: double.infinity,
                         child: RaisedButton(
                           padding: EdgeInsets.all(15),
-
-                          onPressed: () {
-                            Navigator.pushReplacement(context, new MaterialPageRoute(builder: (context) => Home()));
-                          },
+                          onPressed: login,
                           child: Text(
                             "ĐĂNG NHẬP",
                             style: CustomTextStyle.textFormFieldRegular.copyWith(color: Colors.white, fontSize: 14),
@@ -94,48 +113,6 @@ class _LoginState extends State<Login> {
                         ),
                       ),
                       Utils.getSizedBox(height: 10),
-                      // Row(
-                      //   children: <Widget>[
-                      //     Expanded(
-                      //       child: Container(
-                      //         color: Colors.grey.shade200,
-                      //         margin: EdgeInsets.only(right: 16),
-                      //         height: 1,
-                      //       ),
-                      //       flex: 40,
-                      //     ),
-                      //     Text(
-                      //       "Or",
-                      //       style: CustomTextStyle.textFormFieldMedium
-                      //           .copyWith(fontSize: 14),
-                      //     ),
-                      //     Expanded(
-                      //       child: Container(
-                      //         color: Colors.grey.shade200,
-                      //         margin: EdgeInsets.only(left: 16),
-                      //         height: 1,
-                      //       ),
-                      //       flex: 40,
-                      //     )
-                      //   ],
-                      // ),
-                      // Utils.getSizedBox(height: 14),
-                      // Container(
-                      //   width: double.infinity,
-                      //   child: RaisedButton(
-                      //     onPressed: () {},
-                      //     child: Text(
-                      //       "FACEBOOK LOGIN",
-                      //       style: CustomTextStyle.textFormFieldMedium
-                      //           .copyWith(color: Colors.white, fontSize: 14),
-                      //     ),
-                      //     color: CustomColors.COLOR_FB,
-                      //     textColor: Colors.white,
-                      //     shape: RoundedRectangleBorder(
-                      //         borderRadius:
-                      //             BorderRadius.all(Radius.circular(4))),
-                      //   ),
-                      // ),
                       Utils.getSizedBox(height: 10),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -166,5 +143,39 @@ class _LoginState extends State<Login> {
         );
       }),
     );
+  }
+
+  void login() async {
+    var username = loginEmailController.text.trim();
+    var password = loginPasswordController.text.trim();
+    if (username.isEmpty) {
+      Util.showToast('Vui lòng nhập tên truy cập!');
+      return;
+    }
+    if (password.isEmpty) {
+      Util.showToast('Vui lòng nhập mật khẩu!');
+      return;
+    }
+    onLoading(true);
+    print('login ');
+    Map params = new Map<String, String>();
+    params['username'] = username;
+    params['password'] =password;
+    var encryptString = await ResourceUtil.stringEncryption(params);
+
+    final response = await ApiService.login(encryptString);
+    onLoading(false);
+    if (response.statusCode == 200) {
+      var data = json.decode(response.data);
+      if (data['status'] == 'no') {
+        Util.showToast(data['mess']);
+      } else {
+        Util.showToast('Đăng nhập thành công');
+        Navigator.pushReplacement(context, new MaterialPageRoute(builder: (context) => Home()));
+      }
+    }
+  }
+  onLoading(bool isLoading) {
+    _isLoadingSubject.sink.add(isLoading);
   }
 }

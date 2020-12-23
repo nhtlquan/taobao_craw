@@ -39,6 +39,24 @@ dependencies:
   grouped_list: ^3.5.0
   translator: ^0.1.5
   aws_translate: ^0.1.1
+  curved_navigation_bar: ^0.3.3
+  google_nav_bar: ^3.0.0
+  menu_button: ^1.2.1
+  font_awesome_flutter: ^8.0.1
+  flutter_string_encryption: ^0.3.1
+  cipher2: ^0.3.5
+  dio: ^3.0.10
+  crypto: ^2.1.5
+  loading: ^1.0.2
+  pbkdf2_dart: ^2.1.0
+  encrypt: ^4.0.2
+  salt: ^0.1.0
+  password_hash: ^2.0.0
+  pointycastle: ^1.0.2
+  password: ^1.0.0
+  pull_to_refresh: ^1.6.1
+  shared_preferences: ^0.5.3+4
+  url_launcher: ^5.7.2
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
