@@ -34,6 +34,7 @@ class ApiService {
     params["data"] = encryptString;
     return HttpHelper.requestApi(url, params, HttpMethod.post, false, true);
   }
+
   //lịch sử
   static Future<Response> histories(String encryptString) {
     final action = "wallet-histories";
@@ -42,6 +43,7 @@ class ApiService {
     params["data"] = encryptString;
     return HttpHelper.requestApi(url, params, HttpMethod.post, false, true);
   }
+
   //lịch sử
   static Future<Response> balance(String encryptString) {
     final action = "wallet-balance";
@@ -51,219 +53,39 @@ class ApiService {
     return HttpHelper.requestApi(url, params, HttpMethod.post, false, true);
   }
 
-  //đăng nhập
-  static Future<Response> verifyEmail(String userName) {
-    final action = "mem/sendmail_verifyAccount.php?username=" + userName;
+  //lịch sử
+  static Future<Response> countOder(String encryptString) {
+    final action = "order-counts";
     final url = ApiService.BASE_URL + ApiService.API_VERSION + action;
     var params = Map<String, String>();
-    return HttpHelper.requestApi(url, params, HttpMethod.get, false, true);
-  }
-
-  //SEND payment
-  static Future<Response> sendPayment(String paymentData) {
-    final action = "Send";
-    final url = ApiService.BASE_URL + ApiService.API_VERSION + action;
-    var params = Map<String, String>();
-    params["data"] = paymentData;
+    params["data"] = encryptString;
     return HttpHelper.requestApi(url, params, HttpMethod.post, false, true);
   }
 
-  //payment QRCode
-  static Future<Response> sendPaymentQR(String paymentData) {
-    final action = "paymentQR";
+  //lịch sử
+  static Future<Response> oderDetail(String encryptString) {
+    final action = "order-detail";
     final url = ApiService.BASE_URL + ApiService.API_VERSION + action;
     var params = Map<String, String>();
-    params["data"] = paymentData;
+    params["data"] = encryptString;
     return HttpHelper.requestApi(url, params, HttpMethod.post, false, true);
   }
 
-  //qr payment
-  static Future<Response> paymentQRUrl(String paymentData) {
-    final action = "paymentQRUrl";
+  //lịch sử
+  static Future<Response> oderList(String encryptString) {
+    final action = "order-list";
     final url = ApiService.BASE_URL + ApiService.API_VERSION + action;
     var params = Map<String, String>();
-    params["data"] = paymentData;
+    params["data"] = encryptString;
     return HttpHelper.requestApi(url, params, HttpMethod.post, false, true);
   }
 
-  //SEND payment
-  static Future<Response> getWallet(String paymentData) {
-    final action = "GetWallet";
+  //thêm đơn hàng
+  static Future<Response> checkout(String encryptString) {
+    final action = "order-checkout";
     final url = ApiService.BASE_URL + ApiService.API_VERSION + action;
     var params = Map<String, String>();
-    params["data"] = paymentData;
+    params["data"] = encryptString;
     return HttpHelper.requestApi(url, params, HttpMethod.post, false, true);
-  }
-
-  //lấy balance của pit account
-  static Future<Response> getPitBalance(String data) {
-    final action = "PitBalance";
-    final url = ApiService.BASE_URL + ApiService.API_VERSION + action;
-    var params = Map<String, String>();
-    params['data'] = data;
-    return HttpHelper.requestApi(url, params, HttpMethod.post, false, true);
-  }
-
-  //lấy balance của ví stask hoặc ví bussiness
-  static Future<Response> getWalletBalance(String data) {
-    final action = "WalletBalance";
-    final url = ApiService.BASE_URL + ApiService.API_VERSION + action;
-    var params = Map<String, String>();
-    params['data'] = data;
-    return HttpHelper.requestApi(url, params, HttpMethod.post, false, true);
-  }
-
-  //GetPitHistories
-  static Future<Response> getPitHistories(String data) {
-    final action = "PitHistories";
-    final url = ApiService.BASE_URL + ApiService.API_VERSION + action;
-    var params = Map<String, String>();
-    params['data'] = data;
-    return HttpHelper.requestApi(url, params, HttpMethod.post, false, true);
-  }
-
-  //lấy balance của ví stask hoặc ví bussiness
-  static Future<Response> getWalletHistories(String data) {
-    final action = "WalletHistories";
-    final url = ApiService.BASE_URL + ApiService.API_VERSION + action;
-    var params = Map<String, String>();
-    params['data'] = data;
-    return HttpHelper.requestApi(url, params, HttpMethod.post, false, true);
-  }
-
-  //Url2FA
-  static Future<Response> googleAuthenUrl(String data) {
-    final action = "GoogleAuthenUrl";
-    final url = ApiService.BASE_URL + ApiService.API_VERSION + action;
-    var params = Map<String, String>();
-    params['data'] = data;
-    return HttpHelper.requestApi(url, params, HttpMethod.post, false, true);
-  }
-
-  //upload KYC images
-  static Future<Response> uploadKYC(String username, String kycname, String apikey, dynamic txt_file) {
-    final action = "KYC";
-    final url = ApiService.BASE_URL + ApiService.API_VERSION + action;
-    var params = Map<String, String>();
-    params['username'] = username;
-    params['kycname'] = kycname;
-    params['apikey'] = apikey;
-    params['txt_file'] = txt_file;
-    return HttpHelper.requestApi(url, params, HttpMethod.post, false, true);
-  }
-
-  //CreateWallet
-  static Future<Response> createWallet(String data) {
-    final action = "ActiveWallet";
-    final url = ApiService.BASE_URL + ApiService.API_VERSION + action;
-    var params = Map<String, String>();
-    params['data'] = data;
-    return HttpHelper.requestApi(url, params, HttpMethod.post, false, true);
-  }
-
-  //SendPit
-  static Future<Response> sendPit(String data) {
-    final action = "Send";
-    final url = ApiService.BASE_URL + ApiService.API_VERSION + action;
-    var params = Map<String, String>();
-    params['data'] = data;
-    return HttpHelper.requestApi(url, params, HttpMethod.post, false, true);
-  }
-
-  //SendPit
-  static Future<Response> confirm2FA(String data) {
-    final action = "confirm2fa";
-    final url = ApiService.BASE_URL + ApiService.API_VERSION + action;
-    var params = Map<String, String>();
-    params['data'] = data;
-    return HttpHelper.requestApi(url, params, HttpMethod.post, false, true);
-  }
-
-  // //updateFile
-  // static Future<Response> uploadFile(File file, String kycname) {
-  //   final action = "KYC";
-  //   final url = ApiService.BASE_URL + ApiService.API_VERSION + action;
-  //   return HttpHelper.uploadImage(url, file, kycname);
-  // }
-
-  //SendPit
-  static Future<Response> packetList(String data) {
-    final action = "PacketList";
-    final url = ApiService.BASE_URL + ApiService.API_VERSION + action;
-    var params = Map<String, String>();
-    params['data'] = data;
-    return HttpHelper.requestApi(url, params, HttpMethod.post, false, true);
-  }
-
-  static Future<Response> updatePacket(String data) {
-    final action = "updatePacket";
-    final url = ApiService.BASE_URL + ApiService.API_VERSION + action;
-    var params = Map<String, String>();
-    params['data'] = data;
-    return HttpHelper.requestApi(url, params, HttpMethod.post, false, true);
-  }
-
-  static Future<Response> changePassword(String data) {
-    final action = "ChangePassword";
-    final url = ApiService.BASE_URL + ApiService.API_VERSION + action;
-    var params = Map<String, String>();
-    params['data'] = data;
-    return HttpHelper.requestApi(url, params, HttpMethod.post, false, true);
-  }
-
-  static Future<Response> updateInfo(String data) {
-    final action = "UpdateInfo";
-    final url = ApiService.BASE_URL + ApiService.API_VERSION + action;
-    var params = Map<String, String>();
-    params['data'] = data;
-    return HttpHelper.requestApi(url, params, HttpMethod.post, false, true);
-  }
-  static Future<Response> UpdateInviteLink(String data) {
-    final action = "UpdateInviteLink";
-    final url = ApiService.BASE_URL + ApiService.API_VERSION + action;
-    var params = Map<String, String>();
-    params['data'] = data;
-    return HttpHelper.requestApi(url, params, HttpMethod.post, false, true);
-  }
-  static Future<Response> getLinkInviteParent(String data) {
-    final action = "getLinkInviteParent";
-    final url = ApiService.BASE_URL + ApiService.API_VERSION + action;
-    var params = Map<String, String>();
-    params['data'] = data;
-    return HttpHelper.requestApi(url, params, HttpMethod.post, false, true);
-  }
-  static Future<Response> TranferBPit(String data) {
-    final action = "Tranfer";
-    final url = ApiService.BASE_URL + ApiService.API_VERSION + action;
-    var params = Map<String, String>();
-    params['data'] = data;
-    return HttpHelper.requestApi(url, params, HttpMethod.post, false, true);
-  }
-  static Future<Response> WithdrawSPit(String data) {
-    final action = "Withdraw";
-    final url = ApiService.BASE_URL + ApiService.API_VERSION + action;
-    var params = Map<String, String>();
-    params['data'] = data;
-    return HttpHelper.requestApi(url, params, HttpMethod.post, false, true);
-  }
-  static Future<Response> SellPit(String data) {
-    final action = "SellPit";
-    final url = ApiService.BASE_URL + ApiService.API_VERSION + action;
-    var params = Map<String, String>();
-    params['data'] = data;
-    return HttpHelper.requestApi(url, params, HttpMethod.post, false, true);
-  }
-  static Future<Response> SellRate(String data) {
-    final action = "SellRate";
-    final url = ApiService.BASE_URL + ApiService.API_VERSION + action;
-    var params = Map<String, String>();
-    return HttpHelper.requestApi(url, params, HttpMethod.get, false, false);
-  }
-  static Future<Response> getAffiliateLink(String data) {
-    final action = "getAffiliateLink";
-    final url = ApiService.BASE_URL + ApiService.API_VERSION + action;
-    var params = Map<String, String>();
-    params['data'] = data;
-    return HttpHelper.requestApi(url, params, HttpMethod.post, false, false);
   }
 }

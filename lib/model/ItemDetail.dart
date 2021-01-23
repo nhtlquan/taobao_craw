@@ -12,43 +12,48 @@ class ItemDetail {
   ItemDetail({
     this.dataValue,
     this.imageOrigin,
-    this.imageModel,
+    this.img,
     this.priceOrigin,
     this.pricePromotion,
     this.property,
     this.quantity,
     this.orders,
     this.titleOrigin,
-    this.shopName,
+    this.nameshop,
     this.itemId,
     this.shopId,
+    this.note,
     this.wangwang,
   });
 
   List<DataValue> dataValue;
   String imageOrigin;
-  String imageModel;
+  String img;
   String priceOrigin;
   String pricePromotion;
   String property;
+  String color;
+  String size;
   List<Property> orders;
   dynamic quantity;
   String titleOrigin;
-  String shopName;
+  String link;
+  String nameshop;
   String itemId;
   String shopId;
+  String note;
   String wangwang;
 
   factory ItemDetail.fromJson(Map<String, dynamic> json) {
     var itemDetail = new ItemDetail(
       imageOrigin: json["image_origin"] == null ? null : json["image_origin"],
-      imageModel: json["image_model"] == null ? null : json["image_model"],
+      img: json["image_model"] == null ? null : json["image_model"],
       priceOrigin: json["price_origin"] == null ? null : json["price_origin"],
       pricePromotion: json["price_promotion"] == null ? null : json["price_promotion"],
       property: (json["property"] != null && (json["property"] is String)) ? json["property"] : null,
       quantity: json["quantity"] == null ? null : json["quantity"],
       titleOrigin: json["title_origin"] == null ? null : json["title_origin"],
-      shopName: json["shop_name"] == null ? null : json["shop_name"],
+      nameshop: json["shop_name"] == null ? null : json["shop_name"],
       itemId: json["item_id"],
       shopId: json["shop_id"] == null ? null : json["shop_id"],
       wangwang: json["wangwang"] == null ? null : json["wangwang"],
@@ -63,12 +68,12 @@ class ItemDetail {
   Map<String, dynamic> toJson() => {
         "dataValue": dataValue == null ? null : List<dynamic>.from(dataValue.map((x) => x.toJson())),
         "image_origin": imageOrigin == null ? null : imageOrigin,
-        "image_model": imageModel == null ? null : imageModel,
+        "image_model": img == null ? null : img,
         "price_origin": priceOrigin == null ? null : priceOrigin,
         "price_promotion": pricePromotion == null ? null : pricePromotion,
         "quantity": quantity == null ? null : quantity,
         "title_origin": titleOrigin == null ? null : titleOrigin,
-        "shop_name": shopName == null ? null : shopName,
+        "shop_name": nameshop == null ? null : nameshop,
         "item_id": itemId,
         "shop_id": shopId == null ? null : shopId,
         "wangwang": wangwang == null ? null : wangwang,

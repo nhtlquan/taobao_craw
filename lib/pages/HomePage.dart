@@ -29,6 +29,7 @@ class _HomePageState extends State<HomePage> {
     super.initState();
     sliderImage();
     shoesImage();
+
   }
 
   void sliderImage() {
@@ -112,7 +113,7 @@ class _HomePageState extends State<HomePage> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
                       Padding(
-                        padding: const EdgeInsets.only(top: 16, left: 16),
+                        padding: const EdgeInsets.only(top: 10, left: 16),
                         child: Text(
                           "Tài khoản ngân hàng",
                           style: CustomTextStyle.textFormFieldSemiBold.copyWith(color: Colors.black),
@@ -161,13 +162,13 @@ class _HomePageState extends State<HomePage> {
         color: Colors.white,
         elevation: 0.6,
         child: Container(
-          padding: EdgeInsets.all(13),
+          padding: EdgeInsets.all(8),
           child: Row(
             children: <Widget>[
               Image.network(
                 image,
                 fit: BoxFit.fill,
-                width: 60,
+                width: 50,
                 height: 40,
               ),
               SizedBox(
@@ -200,6 +201,7 @@ class _HomePageState extends State<HomePage> {
               ),
               Icon(
                 Icons.copy,
+                size: 18,
                 color: Colors.grey,
               )
             ],
@@ -211,7 +213,7 @@ class _HomePageState extends State<HomePage> {
 
   Widget _operationsWidget(BuildContext context) {
     return Container(
-      padding: EdgeInsets.only(left: 40, right: 40, top: 20, bottom: 10),
+      padding: EdgeInsets.only(left: 40, right: 40, top: 10, bottom: 10),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [

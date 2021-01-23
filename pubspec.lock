@@ -78,6 +78,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.15.0-nullsafety.3"
+  confirm_dialog:
+    dependency: "direct main"
+    description:
+      name: confirm_dialog
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.1.1"
   convert:
     dependency: transitive
     description:
@@ -408,6 +415,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.0.13"
+  prompt_dialog:
+    dependency: "direct main"
+    description:
+      name: prompt_dialog
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.1.3"
   provider:
     dependency: "direct main"
     description:

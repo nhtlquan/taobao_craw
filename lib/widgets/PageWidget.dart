@@ -15,8 +15,11 @@ class PageWidget extends StatefulWidget {
   final VoidOnBackPress onBackPress;
   final VoidRefreshData voidRefreshData;
   final bool resizeToAvoidBottomPadding;
+  final Key key;
 
-  PageWidget({this.streamLoading, this.child, this.appBar, this.bottomNavigationBar, this.voidRefreshData, this.isBackPage = true, this.onBackPress, this.resizeToAvoidBottomPadding = false});
+  PageWidget({this.streamLoading, this.child, this.key, this.appBar, this.bottomNavigationBar, this.voidRefreshData,
+    this
+      .isBackPage = true, this.onBackPress, this.resizeToAvoidBottomPadding = false});
 
   @override
   _PageWidgetState createState() => new _PageWidgetState();
@@ -58,6 +61,7 @@ class _PageWidgetState extends State<PageWidget> with WidgetsBindingObserver {
           child: Stack(
             children: <Widget>[
               Scaffold(
+                key: widget.key,
                 appBar: this.widget.appBar,
                 backgroundColor: Colors.white,
                 resizeToAvoidBottomPadding: widget.resizeToAvoidBottomPadding,

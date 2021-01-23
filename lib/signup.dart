@@ -81,7 +81,7 @@ class _SignUpState extends State<SignUp> {
                         decoration: InputDecoration(
                             contentPadding: EdgeInsets.fromLTRB(16, 16, 16, 12),
                             border: CustomBorder.enabledBorder,
-                            labelText: "Tên đăng nhập",
+                            labelText: "Họ và tên",
                             prefixIcon: Icon(Icons.people),
                             hasFloatingPlaceholder: true,
                             focusedBorder: CustomBorder.focusBorder,
@@ -204,6 +204,7 @@ class _SignUpState extends State<SignUp> {
         Util.showToast(data['mess']);
       } else {
         Util.showToast('Register success');
+        Navigator.pop(context);
       }
     }
   }

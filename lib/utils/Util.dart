@@ -2,14 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app_test/model/ItemDetail.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
+import 'package:flutter_app_test/model/UserInfo.dart';
 
 class Util {
-
   static List<ItemDetail> listItems = new List();
+  static int moneyRate = 3500;
+  static int balance = 3500;
+  static UserInfo userInfo;
 
   static void showToast(String message) {
-    Fluttertoast.showToast(msg: message, toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.BOTTOM,
-        backgroundColor: Colors.grey);
+    Fluttertoast.showToast(
+        msg: message, toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.BOTTOM, backgroundColor: Colors.grey);
   }
 
   static String intToPrice(int price) {
@@ -25,5 +28,4 @@ class Util {
     var string = oCcy.format(price);
     return string.replaceAll(",", ".");
   }
-
 }

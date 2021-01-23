@@ -6,13 +6,13 @@ import 'package:flutter_app_test/utils/CustomBorder.dart';
 import 'package:flutter_app_test/utils/CustomColors.dart';
 import 'package:flutter_app_test/utils/CustomTextStyle.dart';
 import 'package:flutter_app_test/utils/CustomUtils.dart';
+import 'package:flutter_app_test/utils/Util.dart';
 import 'package:flutter_app_test/widgets/PageWidget.dart';
 import 'package:rxdart/rxdart.dart';
-
+import 'package:flutter_app_test/model/UserInfo.dart';
 import 'ResourceUtil.dart';
-import 'Util/Util.dart';
 import 'helper/ApiService.dart';
-import 'home.dart';
+import 'MainPage.dart';
 
 class Login extends StatefulWidget {
   @override
@@ -58,12 +58,12 @@ class _LoginState extends State<Login> {
                   child: Column(
                     children: <Widget>[
                       TextFormField(
-                        controller:loginEmailController,
+                        controller: loginEmailController,
                         decoration: InputDecoration(
                             prefixIcon: Icon(Icons.people),
                             contentPadding: EdgeInsets.fromLTRB(16, 16, 16, 12),
                             border: CustomBorder.enabledBorder,
-                            labelText: "Tên đăng nhập",
+                            labelText: "Số điện thoại",
                             hasFloatingPlaceholder: true,
                             focusedBorder: CustomBorder.focusBorder,
                             errorBorder: CustomBorder.errorBorder,
@@ -73,7 +73,7 @@ class _LoginState extends State<Login> {
                       ),
                       Utils.getSizedBox(height: 20),
                       TextFormField(
-                        controller:loginPasswordController,
+                        controller: loginPasswordController,
                         decoration: InputDecoration(
                             prefixIcon: Icon(Icons.lock),
                             contentPadding: EdgeInsets.fromLTRB(16, 16, 16, 12),
@@ -146,6 +146,7 @@ class _LoginState extends State<Login> {
   }
 
   void login() async {
+    FocusScope.of(context).unfocus();
     var username = loginEmailController.text.trim();
     var password = loginPasswordController.text.trim();
     if (username.isEmpty) {
@@ -160,7 +161,8 @@ class _LoginState extends State<Login> {
     print('login ');
     Map params = new Map<String, String>();
     params['username'] = username;
-    params['password'] =password;
+    params['password'] = password;
+    print(params);
     var encryptString = await ResourceUtil.stringEncryption(params);
 
     final response = await ApiService.login(encryptString);
@@ -168,13 +170,15 @@ class _LoginState extends State<Login> {
     if (response.statusCode == 200) {
       var data = json.decode(response.data);
       if (data['status'] == 'no') {
-        Util.showToast(data['mess']);
+        Util.showToast('Đăng nhập không thành công');
       } else {
         Util.showToast('Đăng nhập thành công');
-        Navigator.pushReplacement(context, new MaterialPageRoute(builder: (context) => Home()));
+        Util.userInfo = UserInfo.fromJson(json.decode(response.data));
+        Navigator.pushReplacement(context, new MaterialPageRoute(builder: (context) => Main()));
       }
     }
   }
+
   onLoading(bool isLoading) {
     _isLoadingSubject.sink.add(isLoading);
   }

@@ -1,6 +1,7 @@
 import 'package:auro_avatar/auro_avatar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app_test/utils/ResourceUtil.dart';
+import 'package:flutter_app_test/utils/Util.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 const heightAppBar = 140;
@@ -10,6 +11,7 @@ class HeaderWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     return Stack(children: [
       ClipRRect(
         borderRadius: BorderRadius.vertical(bottom: Radius.circular(16)),
@@ -84,10 +86,10 @@ class HeaderWidget extends StatelessWidget {
                       ),
                       children: <TextSpan>[
                         new TextSpan(
-                            text: 'Hi, ',
+                            text: 'Xin chào, ',
                             style: TextStyle(fontSize: 18, color: Colors.yellow, fontWeight: FontWeight.bold)),
                         new TextSpan(
-                            text: 'Lê Quân',
+                            text: Util.userInfo.data.name,
                             style: new TextStyle(
                                 fontSize: 18, height: 1, fontWeight: FontWeight.bold, color: Colors.white)),
                       ],
@@ -127,7 +129,7 @@ class HeaderWidget extends StatelessWidget {
                             text: 'Tỷ giá: ',
                             style: TextStyle(fontSize: 18, color: Colors.yellow, fontWeight: FontWeight.normal)),
                         new TextSpan(
-                            text: '3.500', style: new TextStyle(fontWeight: FontWeight.normal, color: Colors.yellow)),
+                            text: Util.intToPriceDouble(Util.moneyRate), style: new TextStyle(fontWeight: FontWeight.normal, color: Colors.yellow)),
                         new TextSpan(
                             text: ' đ/Y', style: new TextStyle(fontWeight: FontWeight.normal, color: Colors.white)),
                       ],

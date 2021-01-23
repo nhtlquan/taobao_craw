@@ -2,12 +2,15 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 
+import 'MainPage.dart';
 import 'login.dart';
 
 void main() => runApp(new MaterialApp(
-      home: MyApp(),
       debugShowCheckedModeBanner: false,
-      routes: <String, WidgetBuilder>{},
+      routes: {
+        '/': (BuildContext context) => Login(),
+        '/Home': (BuildContext context) => Main(),
+      },
     ));
 
 class MyApp extends StatefulWidget {
@@ -17,8 +20,7 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   navigatePage() {
-    Navigator.of(context)
-        .pushReplacement(new MaterialPageRoute(builder: (context) => Login()));
+    Navigator.of(context).pushReplacement(new MaterialPageRoute(builder: (context) => Login()));
   }
 
   splashMove() {

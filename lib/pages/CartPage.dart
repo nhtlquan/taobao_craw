@@ -4,6 +4,7 @@ import 'package:flutter_app_test/utils/CustomTextStyle.dart';
 import 'package:flutter_app_test/utils/CustomUtils.dart';
 import 'package:flutter_app_test/utils/Util.dart';
 import 'package:grouped_list/grouped_list.dart';
+import 'package:prompt_dialog/prompt_dialog.dart';
 
 import 'CheckOutPage.dart';
 
@@ -13,6 +14,8 @@ class CartPage extends StatefulWidget {
 }
 
 class _CartPageState extends State<CartPage> {
+  double totalMoney = 0;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,12 +24,33 @@ class _CartPageState extends State<CartPage> {
       backgroundColor: Colors.grey.shade100,
       body: Builder(
         builder: (context) {
-          return ListView(
-            children: <Widget>[createHeader(), createSubTitle(), createCartList(), footer(context)],
-          );
+          return SafeArea(
+              child: Column(
+            children: <Widget>[
+              createHeader(),
+              SizedBox(
+                height: 10,
+              ),
+              createCartList()
+            ],
+          ));
         },
       ),
     );
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    moneyTotal();
+  }
+
+  moneyTotal() {
+    for (var item in Util.listItems) {
+      totalMoney = totalMoney + double.parse(item.priceOrigin) * Util.moneyRate * int.parse(item.quantity);
+    }
+    setState(() {});
   }
 
   footer(BuildContext context) {
@@ -41,32 +65,18 @@ class _CartPageState extends State<CartPage> {
               Container(
                 margin: EdgeInsets.only(left: 30),
                 child: Text(
-                  "Total",
-                  style: CustomTextStyle.textFormFieldMedium.copyWith(color: Colors.grey, fontSize: 12),
+                  "Tổng",
+                  style: CustomTextStyle.textFormFieldMedium.copyWith(color: Colors.grey, fontSize: 14),
                 ),
               ),
               Container(
                 margin: EdgeInsets.only(right: 30),
                 child: Text(
-                  "\$299.00",
+                  Util.intToPriceDouble(totalMoney) + ' đ',
                   style: CustomTextStyle.textFormFieldBlack.copyWith(color: Colors.greenAccent.shade700, fontSize: 14),
                 ),
               ),
             ],
-          ),
-          Utils.getSizedBox(height: 8),
-          RaisedButton(
-            onPressed: () {
-              Util.listItems.clear();
-              Navigator.push(context, new MaterialPageRoute(builder: (context) => CheckOutPage()));
-            },
-            color: Colors.green,
-            padding: EdgeInsets.only(top: 12, left: 60, right: 60, bottom: 12),
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(24))),
-            child: Text(
-              "Checkout",
-              style: CustomTextStyle.textFormFieldSemiBold.copyWith(color: Colors.white),
-            ),
           ),
           Utils.getSizedBox(height: 8),
         ],
@@ -76,63 +86,108 @@ class _CartPageState extends State<CartPage> {
   }
 
   createHeader() {
-    return Container(
-      alignment: Alignment.topLeft,
-      child: Text(
-        "Giỏ Hàng",
-        style: CustomTextStyle.textFormFieldBold.copyWith(fontSize: 16, color: Colors.black),
-      ),
-      margin: EdgeInsets.only(left: 12, top: 12),
-    );
-  }
-
-  createSubTitle() {
     var size = Util.listItems.length;
-    return Container(
-      alignment: Alignment.topLeft,
-      child: Text(
-        "Tổng ($size) sản phẩm",
-        style: CustomTextStyle.textFormFieldBold.copyWith(fontSize: 12, color: Colors.grey),
-      ),
-      margin: EdgeInsets.only(left: 12, top: 4),
+    return Row(
+      children: [
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              alignment: Alignment.topLeft,
+              child: Text(
+                "Giỏ Hàng",
+                style: CustomTextStyle.textFormFieldBold.copyWith(fontSize: 21, color: Colors.black),
+              ),
+              margin: EdgeInsets.only(left: 12, top: 12),
+            ),
+            SizedBox(
+              height: 5,
+            ),
+            Row(
+              children: [
+                Container(
+                  alignment: Alignment.topLeft,
+                  child: Text(
+                    "Tổng ($size) : ",
+                    style: CustomTextStyle.textFormFieldBold.copyWith(fontSize: 14, color: Colors.grey),
+                  ),
+                  margin: EdgeInsets.only(
+                    left: 12,
+                  ),
+                ),
+                Text(
+                  Util.intToPriceDouble(totalMoney) + ' đ',
+                  style: CustomTextStyle.textFormFieldBlack.copyWith(color: Colors.greenAccent.shade700, fontSize: 14),
+                ),
+              ],
+            ),
+          ],
+        ),
+        Spacer(),
+        RaisedButton(
+          onPressed: () {
+            Navigator.push(context, new MaterialPageRoute(builder: (context) => CheckOutPage()));
+          },
+          color: Colors.green,
+          padding: EdgeInsets.only(top: 8, left: 30, right: 30, bottom: 8),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(24))),
+          child: Text(
+            "Mua hàng",
+            style: CustomTextStyle.textFormFieldSemiBold.copyWith(color: Colors.white),
+          ),
+        ),
+        SizedBox(
+          width: 10,
+        ),
+      ],
     );
   }
 
   createCartList() {
-    return GroupedListView<ItemDetail, String>(
-      elements: Util.listItems,
-      shrinkWrap: true,
-      groupBy: (element) => element.shopName,
-      groupComparator: (value1, value2) => value2.compareTo(value1),
-      itemComparator: (item1, item2) => item1.titleOrigin.compareTo(item2.titleOrigin),
-      order: GroupedListOrder.DESC,
-
-      useStickyGroupSeparators: true,
-      groupSeparatorBuilder: (String value) => Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          SizedBox(width: 16,),
-          Checkbox(value: false, onChanged: null, ),
-          Icon(Icons.shopping_bag_outlined, color: Colors.grey,size: 20,),
-          SizedBox(width: 5,),
-          Text(
-            value,
-            textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
+    return Expanded(
+      child: GroupedListView<ItemDetail, String>(
+        elements: Util.listItems,
+        shrinkWrap: true,
+        groupBy: (element) => element.nameshop,
+        groupComparator: (value1, value2) => value2.compareTo(value1),
+        itemComparator: (item1, item2) => item1.titleOrigin.compareTo(item2.titleOrigin),
+        order: GroupedListOrder.DESC,
+        useStickyGroupSeparators: false,
+        groupSeparatorBuilder: (String value) => Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              SizedBox(
+                width: 16,
+              ),
+              Icon(
+                Icons.shopping_bag_outlined,
+                color: Colors.grey,
+                size: 20,
+              ),
+              SizedBox(
+                width: 5,
+              ),
+              Text(
+                value,
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
+              ),
+            ],
           ),
-        ],
+        ),
+        itemBuilder: (c, element) {
+          return createCartListItem(element);
+        },
       ),
-      itemBuilder: (c, element) {
-        return createCartListItem(element);
-      },
     );
   }
 
   createCartListItem(ItemDetail item) {
-    print(item.property);
-    var priceVND = Util.intToPriceDouble(double.parse(item.priceOrigin) * 3500);
+    var priceVND = Util.intToPriceDouble(double.parse(item.priceOrigin) * Util.moneyRate);
     var totalPrice = Util.intToPriceDouble(double.parse(item.priceOrigin) * int.parse(item.quantity));
-    var priceTotalVND = Util.intToPriceDouble(double.parse(item.priceOrigin) * 3500 * int.parse(item.quantity));
+    var priceTotalVND = Util.intToPriceDouble(double.parse(item.priceOrigin) * Util.moneyRate * int.parse(item.quantity));
     return Stack(
       children: <Widget>[
         Container(
@@ -144,9 +199,11 @@ class _CartPageState extends State<CartPage> {
             borderRadius: BorderRadius.all(Radius.circular(8)),
             child: Row(
               children: <Widget>[
-                Checkbox(value: false, onChanged: null),
+                SizedBox(
+                  width: 10,
+                ),
                 Image.network(
-                  item.imageModel,
+                  item.img,
                   height: 100,
                   fit: BoxFit.cover,
                 ),
@@ -181,31 +238,54 @@ class _CartPageState extends State<CartPage> {
                         ),
                         Utils.getSizedBox(height: 6),
                         Text(
-                          'Thành tiền: ' + priceTotalVND + ' VNĐ',
+                          'Thành tiền: ' + priceTotalVND + ' đ',
                           style: CustomTextStyle.textFormFieldBlack.copyWith(color: Colors.green, fontSize: 12),
                         ),
+                        Utils.getSizedBox(height: 3),
                         Row(
                           children: [
-                            Spacer(),
-                            Icon(
-                              Icons.edit,
-                              color: Colors.orange,
-                              size: 18,
+                              Expanded(
+                                child: Text(
+                                  item.note??'',
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: CustomTextStyle.textFormFieldRegular.copyWith(color: Colors.grey, fontSize: 12),
+                                ),
+                              ),
+                            InkWell(
+                              onTap: () async {
+                                item.note = await prompt(
+                                  context,
+                                  title: Text('Ghi chú'),
+                                  textOK: Text('Đồng ý'),
+                                  textCancel: Text('Hủy'),
+                                  hintText: 'Nhập ghi chú cho sản phẩm',
+                                  autoFocus: true,
+                                  initialValue: item.note??'',
+                                  obscureText: false,
+                                  obscuringCharacter: '•',
+                                  textCapitalization: TextCapitalization.words,
+                                );
+                                setState(() {});
+                              },
+                              child: Icon(
+                                Icons.edit,
+                                color: Colors.orange,
+                                size: 21,
+                              ),
                             ),
                             SizedBox(
-                              width: 20,
+                              width: 10,
                             ),
                             InkWell(
-                              onTap: (){
+                              onTap: () {
                                 Util.listItems.remove(item);
-                                setState(() {
-
-                                });
+                                setState(() {});
                               },
                               child: Icon(
                                 Icons.delete_forever,
                                 color: Colors.red,
-                                size: 18,
+                                size: 21,
                               ),
                             ),
                             SizedBox(
@@ -224,4 +304,5 @@ class _CartPageState extends State<CartPage> {
       ],
     );
   }
+
 }

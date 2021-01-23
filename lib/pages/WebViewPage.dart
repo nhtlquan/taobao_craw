@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app_test/model/ItemDetail.dart';
 import 'package:flutter_app_test/utils/Util.dart';
+import 'package:flutter_app_test/widgets/PageWidget.dart';
 import 'package:translator/translator.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'dart:async';
@@ -32,6 +33,10 @@ class _WebViewExampleState extends State<WebViewExample> {
 
   Stream get headerStream => _headerSubject.stream;
   var currentURL = '';
+  var _isLoadingSubject = BehaviorSubject<bool>.seeded(false);
+
+  Stream get isLoadingStream => _isLoadingSubject.stream;
+
 
   @override
   void dispose() {
@@ -39,6 +44,7 @@ class _WebViewExampleState extends State<WebViewExample> {
     super.dispose();
     _isPageDetailSubject.close();
     _headerSubject.close();
+    _isLoadingSubject.close();
   }
 
   @override
@@ -53,8 +59,9 @@ class _WebViewExampleState extends State<WebViewExample> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Builder(builder: (BuildContext context) {
+    return PageWidget(
+      streamLoading: isLoadingStream,
+      child: Builder(builder: (BuildContext context) {
         return Column(
           children: [
             StreamBuilder<Object>(
@@ -204,15 +211,20 @@ class _WebViewExampleState extends State<WebViewExample> {
       openPopupProperty();
       return;
     }
+    onLoading(true);
+
     final translator = GoogleTranslator();
     var title = await translator.translate(itemDetail.titleOrigin, to: 'vi', from: 'zh-cn');
+
     itemDetail.titleOrigin = title.text;
     _headerSubject.sink.add(null);
     if (itemDetail.orders.isNotEmpty) {
       for (var item in itemDetail.orders) {
         ItemDetail itemDetailSub = ItemDetail.fromJson(json.decode(data));
         itemDetailSub.property = (item.color + '; ' + item.size);
-        itemDetailSub.quantity = item.count;
+        itemDetailSub.color = item.color;
+        itemDetailSub.size = item.size;
+        itemDetailSub.link = currentURL;
         itemDetailSub.priceOrigin = item.price.isEmpty ? itemDetail.priceOrigin : item.price.replaceAll('￥', '');
         itemDetailSub.pricePromotion = item.price.isEmpty ? itemDetail.pricePromotion : item.price.replaceAll('￥', '');
         print(title);
@@ -225,6 +237,7 @@ class _WebViewExampleState extends State<WebViewExample> {
     for (var item in Util.listItems) {
       print(item.property);
     }
+    onLoading(false);
     Util.showToast('Thêm vào giỏ hàng thành công!');
   }
 
@@ -322,23 +335,16 @@ class _WebViewExampleState extends State<WebViewExample> {
                   )
                 ],
               ),
-              onPressed: !_loadedPage
-                  ? null
-                  : () async {
-                      if (await _myController.canGoBack()) {
-                        await _myController.goBack();
-                      } else {
-                        // ignore: deprecated_member_use
-                        Scaffold.of(context).showSnackBar(
-                          const SnackBar(content: Text("No back history item")),
-                        );
-                        return;
-                      }
-                    },
+              onPressed: !_loadedPage ? null : () {
+                Navigator.pop(context);
+              },
             ),
           ],
         ),
       ),
     );
+  }
+  onLoading(bool isLoading) {
+    _isLoadingSubject.sink.add(isLoading);
   }
 }

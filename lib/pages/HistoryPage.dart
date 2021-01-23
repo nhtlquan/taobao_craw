@@ -1,21 +1,34 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_app_test/helper/ApiService.dart';
+import 'package:flutter_app_test/model/UserInfo.dart';
 import 'package:flutter_app_test/utils/CustomTextStyle.dart';
 import 'package:flutter_app_test/utils/CustomUtils.dart';
+import 'package:flutter_app_test/utils/Util.dart';
+import 'package:flutter_app_test/widgets/PageWidget.dart';
+import 'package:rxdart/rxdart.dart';
 
-class SearchPage extends StatefulWidget {
+import '../ResourceUtil.dart';
+
+class HistoryPage extends StatefulWidget {
   @override
-  _SearchPageState createState() => _SearchPageState();
+  _HistoryPageState createState() => _HistoryPageState();
 }
 
-class _SearchPageState extends State<SearchPage> {
+class _HistoryPageState extends State<HistoryPage> {
   List<String> listCategory = new List();
   List<String> listShoesImage = new List();
+  var _isLoadingSubject = BehaviorSubject<bool>.seeded(false);
+
+  Stream get isLoadingStream => _isLoadingSubject.stream;
 
   @override
   void initState() {
     super.initState();
     createCategoryList();
     shoesImage();
+    getListOder();
   }
 
   createCategoryList() {
@@ -38,9 +51,9 @@ class _SearchPageState extends State<SearchPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.grey.shade50,
-      body: ListView(
+    return PageWidget(
+      streamLoading: isLoadingStream,
+      child: ListView(
         children: <Widget>[
           searchHeader(),
           horizontalDivider(),
@@ -71,10 +84,8 @@ class _SearchPageState extends State<SearchPage> {
               child: TextFormField(
                 decoration: InputDecoration(
                     hintText: "Search for brands & products",
-                    hintStyle: CustomTextStyle.textFormFieldRegular
-                        .copyWith(color: Colors.grey, fontSize: 12),
-                    labelStyle: CustomTextStyle.textFormFieldRegular
-                        .copyWith(color: Colors.black, fontSize: 12),
+                    hintStyle: CustomTextStyle.textFormFieldRegular.copyWith(color: Colors.grey, fontSize: 12),
+                    labelStyle: CustomTextStyle.textFormFieldRegular.copyWith(color: Colors.black, fontSize: 12),
                     border: textFieldBorder(),
                     enabledBorder: textFieldBorder(),
                     focusedBorder: textFieldBorder()),
@@ -85,8 +96,7 @@ class _SearchPageState extends State<SearchPage> {
   }
 
   OutlineInputBorder textFieldBorder() => OutlineInputBorder(
-      borderRadius: BorderRadius.all(Radius.circular(0)),
-      borderSide: BorderSide(color: Colors.transparent));
+      borderRadius: BorderRadius.all(Radius.circular(0)), borderSide: BorderSide(color: Colors.transparent));
 
   horizontalDivider() {
     return Container(
@@ -127,8 +137,7 @@ class _SearchPageState extends State<SearchPage> {
     return Container(
       child: Text(
         strCategory,
-        style: CustomTextStyle.textFormFieldBold
-            .copyWith(color: Colors.grey.shade800, fontSize: 12),
+        style: CustomTextStyle.textFormFieldBold.copyWith(color: Colors.grey.shade800, fontSize: 12),
       ),
       margin: EdgeInsets.only(left: leftMargin, right: rightMargin),
       padding: EdgeInsets.symmetric(horizontal: 24, vertical: 6),
@@ -151,13 +160,11 @@ class _SearchPageState extends State<SearchPage> {
               children: <Widget>[
                 Text(
                   "RECENT SEARCHES",
-                  style: CustomTextStyle.textFormFieldBold.copyWith(
-                      color: Colors.black.withOpacity(.5), fontSize: 11),
+                  style: CustomTextStyle.textFormFieldBold.copyWith(color: Colors.black.withOpacity(.5), fontSize: 11),
                 ),
                 Text(
                   "EDIT",
-                  style: CustomTextStyle.textFormFieldBold
-                      .copyWith(color: Colors.pink.shade700, fontSize: 11),
+                  style: CustomTextStyle.textFormFieldBold.copyWith(color: Colors.pink.shade700, fontSize: 11),
                 ),
               ],
             ),
@@ -197,8 +204,7 @@ class _SearchPageState extends State<SearchPage> {
             width: 40,
             height: 40,
             decoration: BoxDecoration(
-                image: DecorationImage(
-                    image: AssetImage(listShoesImage), fit: BoxFit.cover),
+                image: DecorationImage(image: AssetImage(listShoesImage), fit: BoxFit.cover),
                 border: Border.all(color: Colors.grey.shade300, width: 1),
                 shape: BoxShape.circle),
           ),
@@ -209,8 +215,7 @@ class _SearchPageState extends State<SearchPage> {
             textWidthBasis: TextWidthBasis.parent,
             softWrap: true,
             textAlign: TextAlign.center,
-            style: CustomTextStyle.textFormFieldRegular
-                .copyWith(fontSize: 10, color: Colors.black),
+            style: CustomTextStyle.textFormFieldRegular.copyWith(fontSize: 10, color: Colors.black),
           )
         ],
       ),
@@ -228,8 +233,7 @@ class _SearchPageState extends State<SearchPage> {
             margin: EdgeInsets.symmetric(horizontal: 12, vertical: 12),
             child: Text(
               "ITEMS YOU HAVE WISHLISTED",
-              style: CustomTextStyle.textFormFieldBold
-                  .copyWith(color: Colors.black.withOpacity(.5), fontSize: 11),
+              style: CustomTextStyle.textFormFieldBold.copyWith(color: Colors.black.withOpacity(.5), fontSize: 11),
             ),
           ),
           Container(
@@ -254,8 +258,7 @@ class _SearchPageState extends State<SearchPage> {
   createWishListItem() {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 4),
-      decoration:
-          BoxDecoration(border: Border.all(color: Colors.grey.shade100)),
+      decoration: BoxDecoration(border: Border.all(color: Colors.grey.shade100)),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
@@ -264,8 +267,7 @@ class _SearchPageState extends State<SearchPage> {
               width: 120,
               decoration: BoxDecoration(
                 color: Colors.teal.shade200,
-                image: DecorationImage(
-                    image: AssetImage("images/shoes_1.png"), fit: BoxFit.cover),
+                image: DecorationImage(image: AssetImage("images/shoes_1.png"), fit: BoxFit.cover),
               ),
             ),
             flex: 70,
@@ -275,8 +277,7 @@ class _SearchPageState extends State<SearchPage> {
             margin: EdgeInsets.symmetric(horizontal: 4),
             child: Text(
               "HIGHLANDER",
-              style: CustomTextStyle.textFormFieldRegular
-                  .copyWith(color: Colors.black.withOpacity(0.7), fontSize: 12),
+              style: CustomTextStyle.textFormFieldRegular.copyWith(color: Colors.black.withOpacity(0.7), fontSize: 12),
             ),
           ),
           Utils.getSizedBox(height: 6),
@@ -284,8 +285,7 @@ class _SearchPageState extends State<SearchPage> {
             margin: EdgeInsets.symmetric(horizontal: 4),
             child: Text(
               "\$12",
-              style: CustomTextStyle.textFormFieldBold
-                  .copyWith(color: Colors.black, fontSize: 12),
+              style: CustomTextStyle.textFormFieldBold.copyWith(color: Colors.black, fontSize: 12),
             ),
           ),
           Utils.getSizedBox(height: 6),
@@ -295,16 +295,13 @@ class _SearchPageState extends State<SearchPage> {
               children: <Widget>[
                 Text(
                   "\$15",
-                  style: CustomTextStyle.textFormFieldRegular.copyWith(
-                      color: Colors.grey.shade400,
-                      fontSize: 12,
-                      decoration: TextDecoration.lineThrough),
+                  style: CustomTextStyle.textFormFieldRegular
+                      .copyWith(color: Colors.grey.shade400, fontSize: 12, decoration: TextDecoration.lineThrough),
                 ),
                 Utils.getSizedBox(width: 4),
                 Text(
                   "55% OFF",
-                  style: CustomTextStyle.textFormFieldRegular
-                      .copyWith(color: Colors.red.shade400, fontSize: 12),
+                  style: CustomTextStyle.textFormFieldRegular.copyWith(color: Colors.red.shade400, fontSize: 12),
                 ),
               ],
             ),
@@ -326,8 +323,7 @@ class _SearchPageState extends State<SearchPage> {
             margin: EdgeInsets.symmetric(horizontal: 12, vertical: 12),
             child: Text(
               "ITEMS YOU HAVE VIEWED",
-              style: CustomTextStyle.textFormFieldBold
-                  .copyWith(color: Colors.black.withOpacity(.5), fontSize: 11),
+              style: CustomTextStyle.textFormFieldBold.copyWith(color: Colors.black.withOpacity(.5), fontSize: 11),
             ),
           ),
           Container(
@@ -352,8 +348,7 @@ class _SearchPageState extends State<SearchPage> {
   createViewedListItem() {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 4),
-      decoration:
-          BoxDecoration(border: Border.all(color: Colors.grey.shade100)),
+      decoration: BoxDecoration(border: Border.all(color: Colors.grey.shade100)),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
@@ -362,8 +357,7 @@ class _SearchPageState extends State<SearchPage> {
               width: 120,
               decoration: BoxDecoration(
                 color: Colors.teal.shade200,
-                image: DecorationImage(
-                    image: AssetImage("images/shoes_1.png"), fit: BoxFit.cover),
+                image: DecorationImage(image: AssetImage("images/shoes_1.png"), fit: BoxFit.cover),
               ),
             ),
             flex: 70,
@@ -373,8 +367,7 @@ class _SearchPageState extends State<SearchPage> {
             margin: EdgeInsets.symmetric(horizontal: 4),
             child: Text(
               "HIGHLANDER",
-              style: CustomTextStyle.textFormFieldRegular
-                  .copyWith(color: Colors.black.withOpacity(0.7), fontSize: 12),
+              style: CustomTextStyle.textFormFieldRegular.copyWith(color: Colors.black.withOpacity(0.7), fontSize: 12),
             ),
           ),
           Utils.getSizedBox(height: 6),
@@ -382,8 +375,7 @@ class _SearchPageState extends State<SearchPage> {
             margin: EdgeInsets.symmetric(horizontal: 4),
             child: Text(
               "\$12",
-              style: CustomTextStyle.textFormFieldBold
-                  .copyWith(color: Colors.black, fontSize: 12),
+              style: CustomTextStyle.textFormFieldBold.copyWith(color: Colors.black, fontSize: 12),
             ),
           ),
           Utils.getSizedBox(height: 6),
@@ -393,16 +385,13 @@ class _SearchPageState extends State<SearchPage> {
               children: <Widget>[
                 Text(
                   "\$15",
-                  style: CustomTextStyle.textFormFieldRegular.copyWith(
-                      color: Colors.grey.shade400,
-                      fontSize: 12,
-                      decoration: TextDecoration.lineThrough),
+                  style: CustomTextStyle.textFormFieldRegular
+                      .copyWith(color: Colors.grey.shade400, fontSize: 12, decoration: TextDecoration.lineThrough),
                 ),
                 Utils.getSizedBox(width: 4),
                 Text(
                   "55% OFF",
-                  style: CustomTextStyle.textFormFieldRegular
-                      .copyWith(color: Colors.red.shade400, fontSize: 12),
+                  style: CustomTextStyle.textFormFieldRegular.copyWith(color: Colors.red.shade400, fontSize: 12),
                 ),
               ],
             ),
@@ -411,5 +400,32 @@ class _SearchPageState extends State<SearchPage> {
         ],
       ),
     );
+  }
+
+  void getListOder() async {
+    onLoading(true);
+    Map params = new Map<String, dynamic>();
+    // params['ftime'] = Util.userInfo.data.username;
+    // params['ttime'] = Util.userInfo.data.username;
+    params['status'] =0;
+    params['len'] = 50;
+    params['page'] = 1;
+    print(params);
+    var encryptString = await ResourceUtil.stringEncryption(params);
+    final response = await ApiService.oderList(encryptString);
+    onLoading(false);
+    if (response.statusCode == 200) {
+      var data = json.decode(response.data);
+      if (data['status'] == 'no') {
+        Util.showToast('Đăng nhập không thành công');
+      } else {
+        Util.showToast('Đăng nhập thành công');
+        Util.userInfo = UserInfo.fromJson(json.decode(response.data));
+      }
+    }
+  }
+
+  onLoading(bool isLoading) {
+    _isLoadingSubject.sink.add(isLoading);
   }
 }
