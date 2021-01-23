@@ -489,12 +489,16 @@ class _CheckOutPageState extends State<CheckOutPage> {
       ),
     );
   }
-
+var listItem = [];
   void checkout() async {
+    listItem.clear();
+    for(var item in Util.listItems){
+      listItem.add(item.toJson());
+    }
     onLoading(true);
     Map params = new Map<String, dynamic>();
     params['username'] =Util.userInfo.data.username;
-    params['orders'] = jsonEncode(Util.listItems);
+    params['orders'] = listItem;
     print(params);
     var encryptString = await ResourceUtil.stringEncryption(params);
     final response = await ApiService.checkout(encryptString);

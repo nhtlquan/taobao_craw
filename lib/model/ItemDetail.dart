@@ -66,17 +66,20 @@ class ItemDetail {
   }
 
   Map<String, dynamic> toJson() => {
-        "dataValue": dataValue == null ? null : List<dynamic>.from(dataValue.map((x) => x.toJson())),
-        "image_origin": imageOrigin == null ? null : imageOrigin,
-        "image_model": img == null ? null : img,
-        "price_origin": priceOrigin == null ? null : priceOrigin,
-        "price_promotion": pricePromotion == null ? null : pricePromotion,
+
+
+        "price": priceOrigin == null ? null : priceOrigin,
+
         "quantity": quantity == null ? null : quantity,
-        "title_origin": titleOrigin == null ? null : titleOrigin,
-        "shop_name": nameshop == null ? null : nameshop,
-        "item_id": itemId,
-        "shop_id": shopId == null ? null : shopId,
-        "wangwang": wangwang == null ? null : wangwang,
+
+        "nameshop": nameshop == null ? null : nameshop,
+        "id": DateTime.now().microsecondsSinceEpoch,
+    "note": note,
+         "link": link == null ? null : link,
+    "color": color == null ? null : color,
+    "size": size == null ? null : size,
+
+
       };
 }
 

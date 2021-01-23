@@ -35,19 +35,19 @@ class _EditProfilePageState extends State<EditProfilePage> {
             ),
             Stack(
               children: <Widget>[
-                Align(
-                  alignment: Alignment.center,
-                  child: Container(
-                    width: 120,
-                    height: 120,
-                    decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        gradient: LinearGradient(colors: [
-                          CustomColors.EDIT_PROFILE_PIC_FIRST_GRADIENT,
-                          CustomColors.EDIT_PROFILE_PIC_SECOND_GRADIENT
-                        ])),
-                  ),
-                ),
+//                Align(
+//                  alignment: Alignment.center,
+//                  child: Container(
+//                    width: 120,
+//                    height: 120,
+//                    decoration: BoxDecoration(
+//                        shape: BoxShape.circle,
+//                        gradient: LinearGradient(colors: [
+//                          CustomColors.EDIT_PROFILE_PIC_FIRST_GRADIENT,
+//                          CustomColors.EDIT_PROFILE_PIC_SECOND_GRADIENT
+//                        ])),
+//                  ),
+//                ),
                 Align(
                   alignment: Alignment.center,
                   child: Container(
