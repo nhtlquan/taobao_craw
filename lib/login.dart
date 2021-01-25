@@ -24,8 +24,8 @@ class _LoginState extends State<Login> {
 
   Stream get isLoadingStream => _isLoadingSubject.stream;
 
-  TextEditingController loginEmailController = new TextEditingController(text: '');
-  TextEditingController loginPasswordController = new TextEditingController(text: '');
+  TextEditingController loginEmailController = new TextEditingController(text: '0398497046');
+  TextEditingController loginPasswordController = new TextEditingController(text: '123456');
 
   @override
   void dispose() {

@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app_test/helper/ApiService.dart';
 import 'package:flutter_app_test/utils/CustomUtils.dart';
@@ -19,7 +20,6 @@ class CheckOutPage extends StatefulWidget {
 class _CheckOutPageState extends State<CheckOutPage> {
   double totalMoney = 0;
   double totalMoneyVND = 0;
-  GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey();
   var _isLoadingSubject = BehaviorSubject<bool>.seeded(false);
 
   Stream get isLoadingStream => _isLoadingSubject.stream;
@@ -49,7 +49,6 @@ class _CheckOutPageState extends State<CheckOutPage> {
   Widget build(BuildContext context) {
     return PageWidget(
       streamLoading: isLoadingStream,
-      key: _scaffoldKey,
       appBar: AppBar(
         backgroundColor: Colors.green,
         leading: IconButton(
@@ -490,11 +489,17 @@ class _CheckOutPageState extends State<CheckOutPage> {
     );
   }
 
+  var itemOder = [];
+
   void checkout() async {
+    itemOder.clear();
     onLoading(true);
+    for (var item in Util.listItems) {
+      itemOder.add(item.toJson());
+    }
     Map params = new Map<String, dynamic>();
-    params['username'] =Util.userInfo.data.username;
-    params['orders'] = jsonEncode(Util.listItems);
+    params['username'] = Util.userInfo.data.username;
+    params['orders'] = itemOder;
     print(params);
     var encryptString = await ResourceUtil.stringEncryption(params);
     final response = await ApiService.checkout(encryptString);
@@ -504,7 +509,21 @@ class _CheckOutPageState extends State<CheckOutPage> {
       if (data['status'] == 'no') {
         Util.showToast(data['mess']);
       } else {
-        // showThankYouBottomSheet(context);
+        AwesomeDialog(
+            context: context,
+            animType: AnimType.LEFTSLIDE,
+            headerAnimationLoop: false,
+            dialogType: DialogType.SUCCES,
+            title: 'Thành công',
+            desc: 'Đơn hàng của bạn đã được đặt thành công. Chúng tôi sẽ liên hệ bạn để xác nhận thông tin đơn hàng',
+            btnOkOnPress: () {
+              debugPrint('OnClcik');
+            },
+            btnOkIcon: Icons.check_circle,
+            onDissmissCallback: () {
+              debugPrint('Dialog Dissmiss from callback');
+            })
+          ..show();
       }
     }
   }

@@ -72,7 +72,7 @@ class _MainState extends State<Main> {
                 )
               ],
             ),
-            title: Text('Giỏ hàn'),
+            title: Text('Giỏ hàng'),
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person),
