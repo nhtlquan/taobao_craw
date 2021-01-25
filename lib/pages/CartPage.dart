@@ -7,6 +7,7 @@ import 'package:grouped_list/grouped_list.dart';
 import 'package:prompt_dialog/prompt_dialog.dart';
 
 import 'CheckOutPage.dart';
+import 'WebViewPage.dart';
 
 class CartPage extends StatefulWidget {
   @override
@@ -178,16 +179,26 @@ class _CartPageState extends State<CartPage> {
           ),
         ),
         itemBuilder: (c, element) {
-          return createCartListItem(element);
+          return InkWell(
+              onTap: () {
+                print(element.link);
+                Navigator.of(context).push(new MaterialPageRoute(
+                    builder: (context) => WebViewExample(
+                          url: element.link,
+                          isView: true,
+                        )));
+              },
+              child: createCartListItem(element));
         },
       ),
     );
   }
 
-  createCartListItem(ItemDetail item) {
+  Widget createCartListItem(ItemDetail item) {
     var priceVND = Util.intToPriceDouble(double.parse(item.priceOrigin) * Util.moneyRate);
     var totalPrice = Util.intToPriceDouble(double.parse(item.priceOrigin) * int.parse(item.quantity));
-    var priceTotalVND = Util.intToPriceDouble(double.parse(item.priceOrigin) * Util.moneyRate * int.parse(item.quantity));
+    var priceTotalVND =
+        Util.intToPriceDouble(double.parse(item.priceOrigin) * Util.moneyRate * int.parse(item.quantity));
     return Stack(
       children: <Widget>[
         Container(
@@ -244,14 +255,14 @@ class _CartPageState extends State<CartPage> {
                         Utils.getSizedBox(height: 3),
                         Row(
                           children: [
-                              Expanded(
-                                child: Text(
-                                  item.note??'',
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: CustomTextStyle.textFormFieldRegular.copyWith(color: Colors.grey, fontSize: 12),
-                                ),
+                            Expanded(
+                              child: Text(
+                                item.note ?? '',
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: CustomTextStyle.textFormFieldRegular.copyWith(color: Colors.grey, fontSize: 12),
                               ),
+                            ),
                             InkWell(
                               onTap: () async {
                                 item.note = await prompt(
@@ -261,7 +272,7 @@ class _CartPageState extends State<CartPage> {
                                   textCancel: Text('Hủy'),
                                   hintText: 'Nhập ghi chú cho sản phẩm',
                                   autoFocus: true,
-                                  initialValue: item.note??'',
+                                  initialValue: item.note ?? '',
                                   obscureText: false,
                                   obscuringCharacter: '•',
                                   textCapitalization: TextCapitalization.words,
@@ -304,5 +315,4 @@ class _CartPageState extends State<CartPage> {
       ],
     );
   }
-
 }

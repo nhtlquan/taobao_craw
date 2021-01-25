@@ -31,6 +31,7 @@ class _HistoryPageState extends State<HistoryPage> {
 
   int cupertinoTabBarIIIValueGetter() => cupertinoTabBarIIIValue;
   final controller = PageController();
+  var currentPage = 0.0;
 
   @override
   void dispose() {
@@ -44,7 +45,7 @@ class _HistoryPageState extends State<HistoryPage> {
   void initState() {
     super.initState();
     controller.addListener(() {
-      print(controller.page);
+      currentPage = controller.page;
       _headerSubject.sink.add(true);
     });
     getListOder();
@@ -78,27 +79,27 @@ class _HistoryPageState extends State<HistoryPage> {
                           child: Text(
                         'Tất cả',
                         style: TextStyle(
-                          color: controller.page < 0.5 ? Colors.green : Colors.black,
-                          fontWeight: controller.page < 1 ? FontWeight.bold : null,
-                          fontSize: controller.page < 1 ? 16 : 14,
+                          color: currentPage < 0.5 ? Colors.green : Colors.black,
+                          fontWeight: currentPage < 1 ? FontWeight.bold : null,
+                          fontSize: currentPage < 1 ? 16 : 14,
                         ),
                       )),
                       Tab(
                           child: Text(
                         'Đang xử lý',
                         style: TextStyle(
-                          color: controller.page > 0.5 && controller.page < 1.5 ? Colors.green : Colors.black,
-                          fontWeight: controller.page > 0.5 && controller.page < 1.5 ? FontWeight.bold : null,
-                          fontSize: controller.page > 0.5 && controller.page < 1.5 ? 16 : 14,
+                          color: currentPage > 0.5 && currentPage < 1.5 ? Colors.green : Colors.black,
+                          fontWeight: currentPage > 0.5 && currentPage < 1.5 ? FontWeight.bold : null,
+                          fontSize: currentPage > 0.5 && currentPage < 1.5 ? 16 : 14,
                         ),
                       )),
                       Tab(
                           child: Text(
                         'Hoàn thành',
                         style: TextStyle(
-                          color: controller.page > 1.5 ? Colors.green : Colors.black,
-                          fontWeight: controller.page > 1.5 ? FontWeight.bold : null,
-                          fontSize: controller.page > 1.5 ? 16 : 14,
+                          color: currentPage > 1.5 ? Colors.green : Colors.black,
+                          fontWeight: currentPage > 1.5 ? FontWeight.bold : null,
+                          fontSize: currentPage > 1.5 ? 16 : 14,
                         ),
                       )),
                     ],
@@ -260,8 +261,7 @@ class _HistoryPageState extends State<HistoryPage> {
     if (response.statusCode == 200) {
       var data = json.decode(response.data);
       if (data['status'] == 'no') {
-      } else {
-      }
+      } else {}
     }
   }
 

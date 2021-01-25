@@ -13,8 +13,9 @@ import 'package:flutter/services.dart' show rootBundle;
 
 class WebViewExample extends StatefulWidget {
   var url;
+  bool isView;
 
-  WebViewExample({Key key, @required this.url}) : super(key: key);
+  WebViewExample({Key key, @required this.url, this.isView = false}) : super(key: key);
 
   @override
   _WebViewExampleState createState() => _WebViewExampleState();
@@ -36,7 +37,6 @@ class _WebViewExampleState extends State<WebViewExample> {
   var _isLoadingSubject = BehaviorSubject<bool>.seeded(false);
 
   Stream get isLoadingStream => _isLoadingSubject.stream;
-
 
   @override
   void dispose() {
@@ -109,7 +109,7 @@ class _WebViewExampleState extends State<WebViewExample> {
             StreamBuilder<Object>(
                 stream: isPageDetailStream,
                 builder: (context, snapshot) {
-                  if (!isPageDetail)
+                  if (!isPageDetail || widget.isView)
                     return Container(
                       width: double.infinity,
                       height: 40,
@@ -232,6 +232,7 @@ class _WebViewExampleState extends State<WebViewExample> {
         Util.listItems.add(itemDetailSub);
       }
     } else {
+      itemDetail.link = currentURL;
       Util.listItems.add(itemDetail);
     }
     for (var item in Util.listItems) {
@@ -335,15 +336,18 @@ class _WebViewExampleState extends State<WebViewExample> {
                   )
                 ],
               ),
-              onPressed: !_loadedPage ? null : () {
-                Navigator.pop(context);
-              },
+              onPressed: !_loadedPage
+                  ? null
+                  : () {
+                      Navigator.pop(context);
+                    },
             ),
           ],
         ),
       ),
     );
   }
+
   onLoading(bool isLoading) {
     _isLoadingSubject.sink.add(isLoading);
   }
