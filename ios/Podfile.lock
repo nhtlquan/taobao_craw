@@ -1,0 +1,104 @@
+PODS:
+  - auro_avatar (0.0.1):
+    - Flutter
+  - aws_translate (0.0.1):
+    - AWSCognito
+    - AWSTranslate (~> 2.6.19)
+    - Flutter
+  - AWSCognito (2.6.35):
+    - AWSCore (= 2.6.35)
+  - AWSCore (2.6.35)
+  - AWSTranslate (2.6.35):
+    - AWSCore (= 2.6.35)
+  - cipher2 (0.0.1):
+    - CryptoSwift (~> 0.13.1)
+    - Flutter
+  - CryptoSwift (0.13.1)
+  - Flutter (1.0.0)
+  - flutter_money_formatter (0.0.1):
+    - Flutter
+  - flutter_string_encryption (0.0.1):
+    - Flutter
+    - SCrypto (~> 2.0)
+  - fluttertoast (0.0.2):
+    - Flutter
+    - Toast
+  - path_provider (0.0.1):
+    - Flutter
+  - SCrypto (2.0.0)
+  - shared_preferences (0.0.1):
+    - Flutter
+  - Toast (4.0.0)
+  - url_launcher (0.0.1):
+    - Flutter
+  - webview_flutter (0.0.1):
+    - Flutter
+
+DEPENDENCIES:
+  - auro_avatar (from `.symlinks/plugins/auro_avatar/ios`)
+  - aws_translate (from `.symlinks/plugins/aws_translate/ios`)
+  - cipher2 (from `.symlinks/plugins/cipher2/ios`)
+  - Flutter (from `Flutter`)
+  - flutter_money_formatter (from `.symlinks/plugins/flutter_money_formatter/ios`)
+  - flutter_string_encryption (from `.symlinks/plugins/flutter_string_encryption/ios`)
+  - fluttertoast (from `.symlinks/plugins/fluttertoast/ios`)
+  - path_provider (from `.symlinks/plugins/path_provider/ios`)
+  - shared_preferences (from `.symlinks/plugins/shared_preferences/ios`)
+  - url_launcher (from `.symlinks/plugins/url_launcher/ios`)
+  - webview_flutter (from `.symlinks/plugins/webview_flutter/ios`)
+
+SPEC REPOS:
+  trunk:
+    - AWSCognito
+    - AWSCore
+    - AWSTranslate
+    - CryptoSwift
+    - SCrypto
+    - Toast
+
+EXTERNAL SOURCES:
+  auro_avatar:
+    :path: ".symlinks/plugins/auro_avatar/ios"
+  aws_translate:
+    :path: ".symlinks/plugins/aws_translate/ios"
+  cipher2:
+    :path: ".symlinks/plugins/cipher2/ios"
+  Flutter:
+    :path: Flutter
+  flutter_money_formatter:
+    :path: ".symlinks/plugins/flutter_money_formatter/ios"
+  flutter_string_encryption:
+    :path: ".symlinks/plugins/flutter_string_encryption/ios"
+  fluttertoast:
+    :path: ".symlinks/plugins/fluttertoast/ios"
+  path_provider:
+    :path: ".symlinks/plugins/path_provider/ios"
+  shared_preferences:
+    :path: ".symlinks/plugins/shared_preferences/ios"
+  url_launcher:
+    :path: ".symlinks/plugins/url_launcher/ios"
+  webview_flutter:
+    :path: ".symlinks/plugins/webview_flutter/ios"
+
+SPEC CHECKSUMS:
+  auro_avatar: d8468deafcd8f607dab330f77e4fb383f73abf75
+  aws_translate: e7403440a9b745b8716a3eff51fd6e1f617c62ec
+  AWSCognito: 6b96ae976b5f59881c1bb406e0c7d08494651dee
+  AWSCore: 2dab62ef2e5ca5d8c72c6cbdb3a6ea1532c27c2b
+  AWSTranslate: 2eadeb1942dc9495e1431d6e7d0367309b79fab3
+  cipher2: 215b8aa78b783cf5a17eb7b72fda55d025dbeefc
+  CryptoSwift: ff68c35a53e03177d31aaa2c1e8b3e010aeed6cb
+  Flutter: 0e3d915762c693b495b44d77113d4970485de6ec
+  flutter_money_formatter: d0d18ddc5be333fad8d09964d741b59fa11a91dc
+  flutter_string_encryption: e382d87149c0d6b947204315e6c601a9c4792655
+  fluttertoast: 6122fa75143e992b1d3470f61000f591a798cc58
+  path_provider: abfe2b5c733d04e238b0d8691db0cfd63a27a93c
+  SCrypto: 8287dcf6151df38f9bc0efad2ed982c54a96d1b8
+  shared_preferences: af6bfa751691cdc24be3045c43ec037377ada40d
+  Toast: 91b396c56ee72a5790816f40d3a94dd357abc196
+  url_launcher: 6fef411d543ceb26efce54b05a0a40bfd74cbbef
+  webview_flutter: d2b4d6c66968ad042ad94cbb791f5b72b4678a96
+
+PODFILE CHECKSUM: aafe91acc616949ddb318b77800a7f51bffa2a4c
+
+COCOAPODS: 1.10.0
