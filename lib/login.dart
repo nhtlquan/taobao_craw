@@ -11,8 +11,10 @@ import 'package:flutter_app_test/widgets/PageWidget.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:flutter_app_test/model/UserInfo.dart';
 import 'ResourceUtil.dart';
+import 'Util/PreferUtil.dart';
 import 'helper/ApiService.dart';
 import 'MainPage.dart';
+import 'helper/Constant.dart';
 
 class Login extends StatefulWidget {
   @override
@@ -24,14 +26,36 @@ class _LoginState extends State<Login> {
 
   Stream get isLoadingStream => _isLoadingSubject.stream;
 
-  TextEditingController loginEmailController = new TextEditingController(text: '0398497046');
-  TextEditingController loginPasswordController = new TextEditingController(text: '123456');
+  TextEditingController loginEmailController;
+
+  TextEditingController loginPasswordController;
+
+  var username;
+
+  var password;
 
   @override
   void dispose() {
     // TODO: implement dispose
     super.dispose();
     _isLoadingSubject.close();
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    loginEmailController = new TextEditingController(text: '0398497046');
+    loginPasswordController = new TextEditingController(text: '123456');
+    initData();
+  }
+
+  initData() async {
+    username = await PreferUtil.getString(Constant.KEY_USER_NAME);
+    password = await PreferUtil.getString(Constant.KEY_PASSWORD);
+    if (username.isNotEmpty & password.isNotEmpty) {
+      login(isLogin : true);
+    }
   }
 
   @override
@@ -145,10 +169,12 @@ class _LoginState extends State<Login> {
     );
   }
 
-  void login() async {
+  void login({isLogin = false}) async {
     FocusScope.of(context).unfocus();
-    var username = loginEmailController.text.trim();
-    var password = loginPasswordController.text.trim();
+    if (!isLogin) {
+      username = loginEmailController.text.trim();
+      password = loginPasswordController.text.trim();
+    }
     if (username.isEmpty) {
       Util.showToast('Vui lòng nhập tên truy cập!');
       return;
@@ -172,6 +198,8 @@ class _LoginState extends State<Login> {
       if (data['status'] == 'no') {
         Util.showToast('Đăng nhập không thành công');
       } else {
+        await PreferUtil.setString(Constant.KEY_USER_NAME,username);
+        await PreferUtil.setString(Constant.KEY_PASSWORD,password);
         Util.showToast('Đăng nhập thành công');
         Util.userInfo = UserInfo.fromJson(json.decode(response.data));
         Navigator.pushReplacement(context, new MaterialPageRoute(builder: (context) => Main()));

@@ -1,14 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_app_test/model/ConfigGlobal.dart';
 import 'package:flutter_app_test/pages/WebViewPage.dart';
-import 'package:flutter_app_test/utils/CustomBorder.dart';
-import 'package:flutter_app_test/utils/CustomColors.dart';
 import 'package:flutter_app_test/utils/CustomTextStyle.dart';
 import 'package:flutter_app_test/utils/CustomUtils.dart';
 import 'package:flutter_app_test/utils/ResourceUtil.dart';
 import 'package:flutter_app_test/widget/HeaderWidget.dart';
-import 'package:flutter_svg/svg.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter_app_test/utils/Util.dart';
 
 import 'ProductDetailsPage.dart';
 import 'SeeAllProductPage.dart';
@@ -19,31 +20,12 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  List<String> listImage = new List();
-  List<String> listShoesImage = new List();
   int selectedSliderPosition = 0;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    sliderImage();
-    shoesImage();
-
-  }
-
-  void sliderImage() {
-    listImage.add("images/slider1.jpg");
-    listImage.add("images/slider2.jpg");
-    listImage.add("images/slider.jpg");
-  }
-
-  void shoesImage() {
-    listShoesImage.add("https://static.meeyland.com/articles/meeyland-bank-techcombank.1597661141120.png");
-    listShoesImage.add("https://static.meeyland.com/articles/meeyland-bank-vietcombank.1597661206122.png");
-    listShoesImage.add("https://static.meeyland.com/articles/meeyland-bank-pvcombank.1597661206121.png");
-    listShoesImage.add("https://static.meeyland.com/articles/meeyland-bank-logo-acb.1597661206120.png");
-    listShoesImage.add("https://static.meeyland.com/articles/meeyland-bank-tpb.1597661206121.png");
   }
 
   @override
@@ -130,9 +112,9 @@ class _HomePageState extends State<HomePage> {
                   shrinkWrap: true,
                   physics: NeverScrollableScrollPhysics(),
                   itemBuilder: (context, index) {
-                    return createGroupBuyListItem(listShoesImage[index], index);
+                    return createGroupBuyListItem(Util.configGlobal.data.bankList[index], index);
                   },
-                  itemCount: listShoesImage.length,
+                  itemCount: Util.configGlobal == null ? 0 : Util.configGlobal.data.bankList.length,
                 ),
                 Utils.getSizedBox(height: 30),
               ],
@@ -154,57 +136,69 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  createGroupBuyListItem(String image, int index) {
-    return Container(
-      margin: EdgeInsets.only(top: 10, right: 20, left: 20),
-      child: Material(
-        borderRadius: BorderRadius.circular(8),
-        color: Colors.white,
-        elevation: 0.6,
-        child: Container(
-          padding: EdgeInsets.all(8),
-          child: Row(
-            children: <Widget>[
-              Image.network(
-                image,
-                fit: BoxFit.fill,
-                width: 50,
-                height: 40,
-              ),
-              SizedBox(
-                width: 20,
-              ),
-              Expanded(
-                child: Container(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Utils.getSizedBox(height: 8),
-                      Text(
-                        "Le Van Quan",
-                        style: CustomTextStyle.textFormFieldRegular.copyWith(color: Colors.black, fontSize: 14),
-                      ),
-                      Utils.getSizedBox(height: 4),
-                      Text(
-                        "1236547894455",
-                        style: CustomTextStyle.textFormFieldRegular.copyWith(color: Colors.black, fontSize: 12),
-                      ),
-                      Utils.getSizedBox(height: 4),
-                      Text(
-                        "Ngan Hang VietCombank",
-                        style: CustomTextStyle.textFormFieldRegular.copyWith(color: Colors.black, fontSize: 12),
-                      )
-                    ],
+  createGroupBuyListItem(BankList bankList, int index) {
+    return InkWell(
+      onTap: () {
+        Clipboard.setData(new ClipboardData(text: bankList.stk));
+        Util.showToast('Đã sao chép');
+      },
+      child: Container(
+        margin: EdgeInsets.only(top: 10, right: 20, left: 20),
+        child: Material(
+          borderRadius: BorderRadius.circular(8),
+          color: Colors.white,
+          elevation: 0.6,
+          child: Container(
+            padding: EdgeInsets.all(8),
+            child: Row(
+              children: <Widget>[
+                SizedBox(
+                  width: 80,
+                  height: 50,
+                  child: SvgPicture.network(
+                    bankList.logo,
+                    fit: BoxFit.fitWidth,
+
                   ),
                 ),
-              ),
-              Icon(
-                Icons.copy,
-                size: 18,
-                color: Colors.grey,
-              )
-            ],
+                SizedBox(
+                  width: 20,
+                ),
+                Expanded(
+                  child: Container(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Utils.getSizedBox(height: 8),
+                        Text(
+                          bankList.name,
+                          style: CustomTextStyle.textFormFieldRegular.copyWith(color: Colors.black, fontSize: 14),
+                        ),
+                        Utils.getSizedBox(height: 4),
+                        Text(
+                          bankList.stk,
+
+                          style: CustomTextStyle.textFormFieldRegular.copyWith(decoration: TextDecoration.underline,color:
+                          Colors.blueAccent, fontSize:
+                          12),
+                        ),
+                        Utils.getSizedBox(height: 4),
+                        Text(
+                          bankList.nh,
+                          style: CustomTextStyle.textFormFieldRegular.copyWith(color: Colors.black, fontSize: 12),
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+                Icon(
+                  Icons.copy,
+                  size: 18,
+                  color: Colors.grey,
+                )
+              ],
+            ),
           ),
         ),
       ),
@@ -270,65 +264,6 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  createMostBigListItem(String image, int index, BuildContext context) {
-    double leftMargin = 0;
-    double rightMargin = 0;
-    double radius = 16;
-    if (index != listShoesImage.length - 1) {
-      leftMargin = 10;
-    } else {
-      leftMargin = 10;
-      rightMargin = 10;
-    }
-    return GestureDetector(
-      child: Container(
-        margin: EdgeInsets.only(left: leftMargin, right: rightMargin),
-        decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(radius))),
-        child: Column(
-          children: <Widget>[
-            Image.network(
-              image,
-              fit: BoxFit.fill,
-              width: 80,
-              height: 80,
-            ),
-            Expanded(
-              flex: 25,
-              child: Container(
-                padding: EdgeInsets.only(left: leftMargin, right: rightMargin),
-                width: 160,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Utils.getSizedBox(height: 8),
-                    Text(
-                      "NIKE Kyire II",
-                      style: CustomTextStyle.textFormFieldSemiBold
-                          .copyWith(color: Colors.black.withOpacity(.7), fontSize: 12),
-                    ),
-                    Utils.getSizedBox(height: 4),
-                    Text(
-                      "Exquisite you need him",
-                      style: CustomTextStyle.textFormFieldSemiBold
-                          .copyWith(color: Colors.black.withOpacity(.7), fontSize: 10),
-                    )
-                  ],
-                ),
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius:
-                        BorderRadius.only(bottomLeft: Radius.circular(radius), bottomRight: Radius.circular(radius))),
-              ),
-            )
-          ],
-        ),
-      ),
-      onTap: () {
-        Navigator.of(context).push(new MaterialPageRoute(builder: (context) => ProductDetailsPage("$image,$index")));
-      },
-    );
-  }
 
   searchWidget() {
     return Container(

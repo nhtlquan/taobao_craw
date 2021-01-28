@@ -2,7 +2,6 @@ import 'package:auro_avatar/auro_avatar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app_test/utils/ResourceUtil.dart';
 import 'package:flutter_app_test/utils/Util.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 const heightAppBar = 140;
 
@@ -60,7 +59,7 @@ class HeaderWidget extends StatelessWidget {
                 width: 60,
                 height: 60,
                 child: InitialNameAvatar(
-                  'Quan',
+                  Util.userInfo.data.username,
                   circleAvatar: true,
                   borderColor: Colors.white,
                   borderSize: 2.0,
@@ -87,11 +86,11 @@ class HeaderWidget extends StatelessWidget {
                       children: <TextSpan>[
                         new TextSpan(
                             text: 'Xin chào, ',
-                            style: TextStyle(fontSize: 18, color: Colors.yellow, fontWeight: FontWeight.bold)),
+                            style: TextStyle(fontSize: 18, color: Colors.white, fontWeight: FontWeight.bold)),
                         new TextSpan(
                             text: Util.userInfo.data.name,
                             style: new TextStyle(
-                                fontSize: 18, height: 1, fontWeight: FontWeight.bold, color: Colors.white)),
+                                fontSize: 18, height: 1, fontWeight: FontWeight.bold, color: Colors.greenAccent)),
                       ],
                     ),
                   ),
@@ -111,7 +110,7 @@ class HeaderWidget extends StatelessWidget {
                         new TextSpan(
                             text: '0',
                             style: new TextStyle(
-                                fontSize: 16, height: 1.5, fontWeight: FontWeight.normal, color: Colors.yellow)),
+                                fontSize: 16, height: 1.5, fontWeight: FontWeight.normal, color: Colors.greenAccent)),
                         new TextSpan(
                             text: ' đ',
                             style: new TextStyle(
@@ -127,9 +126,13 @@ class HeaderWidget extends StatelessWidget {
                       children: <TextSpan>[
                         new TextSpan(
                             text: 'Tỷ giá: ',
-                            style: TextStyle(fontSize: 18, color: Colors.yellow, fontWeight: FontWeight.normal)),
+                            style: TextStyle(fontSize: 18, color: Colors.white, fontWeight: FontWeight.normal)),
                         new TextSpan(
-                            text: Util.intToPriceDouble(Util.moneyRate), style: new TextStyle(fontWeight: FontWeight.normal, color: Colors.yellow)),
+                            text: Util.intToPriceDouble(Util.configGlobal==null?0:Util.configGlobal.data.rate), style:
+                        new
+                        TextStyle(fontWeight:
+                        FontWeight.normal,
+                            color: Colors.greenAccent)),
                         new TextSpan(
                             text: ' đ/Y', style: new TextStyle(fontWeight: FontWeight.normal, color: Colors.white)),
                       ],

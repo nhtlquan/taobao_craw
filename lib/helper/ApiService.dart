@@ -88,4 +88,12 @@ class ApiService {
     params["data"] = encryptString;
     return HttpHelper.requestApi(url, params, HttpMethod.post, false, true);
   }
+  //thêm đơn hàng
+  static Future<Response> systemConfig(String encryptString) {
+    final action = "system-config";
+    final url = ApiService.BASE_URL + ApiService.API_VERSION + action;
+    var params = Map<String, String>();
+    params["data"] = encryptString;
+    return HttpHelper.requestApi(url, params, HttpMethod.get, false, true);
+  }
 }

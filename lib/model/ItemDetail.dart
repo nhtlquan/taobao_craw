@@ -72,7 +72,7 @@ class ItemDetail {
         "nameshop": nameshop == null ? null : nameshop,
         "id": DateTime.now().microsecondsSinceEpoch,
         "link": link == null ? null : link,
-        "color": color == null ? null : color,
+        "color": color == null ? property : color,
         "size": size == null ? null : size,
       };
 }

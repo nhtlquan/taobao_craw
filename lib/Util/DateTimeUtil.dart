@@ -77,7 +77,7 @@ class DateTimeUtil {
   }
 
   static String getDateTimeToDateSub(DateTime dateTime) {
-    if (dateTime == null) return "";
+    if (dateTime == null) return "--/--/----";
     return dateTimeToString(dateTime, 'dd/MM/yyyy');
   }
 

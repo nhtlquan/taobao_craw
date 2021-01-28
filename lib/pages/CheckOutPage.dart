@@ -509,15 +509,17 @@ class _CheckOutPageState extends State<CheckOutPage> {
       if (data['status'] == 'no') {
         Util.showToast(data['mess']);
       } else {
+        Util.listItems.clear();
         AwesomeDialog(
             context: context,
             animType: AnimType.LEFTSLIDE,
             headerAnimationLoop: false,
             dialogType: DialogType.SUCCES,
+            dismissOnTouchOutside: false,
             title: 'Thành công',
             desc: 'Đơn hàng của bạn đã được đặt thành công. Chúng tôi sẽ liên hệ bạn để xác nhận thông tin đơn hàng',
             btnOkOnPress: () {
-              debugPrint('OnClcik');
+             Navigator.pop(context);
             },
             btnOkIcon: Icons.check_circle,
             onDissmissCallback: () {

@@ -5,11 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app_test/utils/CustomBorder.dart';
 import 'package:flutter_app_test/utils/CustomTextStyle.dart';
 import 'package:flutter_app_test/utils/CustomUtils.dart';
+import 'package:flutter_app_test/utils/Util.dart';
 import 'package:flutter_app_test/widgets/PageWidget.dart';
 import 'package:rxdart/rxdart.dart';
 
 import 'ResourceUtil.dart';
-import 'Util/Util.dart';
 import 'helper/ApiService.dart';
 
 class SignUp extends StatefulWidget {

@@ -48,6 +48,7 @@ class _CartPageState extends State<CartPage> {
   }
 
   moneyTotal() {
+    totalMoney = 0;
     for (var item in Util.listItems) {
       totalMoney = totalMoney + double.parse(item.priceOrigin) * Util.moneyRate * int.parse(item.quantity);
     }
@@ -126,8 +127,13 @@ class _CartPageState extends State<CartPage> {
         ),
         Spacer(),
         RaisedButton(
-          onPressed: () {
-            Navigator.push(context, new MaterialPageRoute(builder: (context) => CheckOutPage()));
+          onPressed: () async {
+            if(Util.listItems.length ==0 )
+              return;
+            await Navigator.push(context, new MaterialPageRoute(builder: (context) => CheckOutPage()));
+            setState(() {
+              moneyTotal();
+            });
           },
           color: Colors.green,
           padding: EdgeInsets.only(top: 8, left: 30, right: 30, bottom: 8),

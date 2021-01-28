@@ -1,6 +1,11 @@
+import 'package:auro_avatar/auro_avatar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app_test/Util/PreferUtil.dart';
+import 'package:flutter_app_test/helper/Constant.dart';
+import 'package:flutter_app_test/login.dart';
 import 'package:flutter_app_test/model/list_profile_section.dart';
 import 'package:flutter_app_test/utils/CustomTextStyle.dart';
+import 'package:flutter_app_test/utils/Util.dart';
 
 import 'AboutUsPage.dart';
 import 'EditProfilePage.dart';
@@ -23,19 +28,9 @@ class _ProfilePage1State extends State<ProfilePage1> {
   }
 
   void createListItem() {
-    listSection.add(createSection("Notifications", "images/ic_notification.png",
-        Colors.blue.shade800, NotificationPage()));
-    listSection.add(createSection(
-        "Payment Method", "images/ic_payment.png", Colors.teal.shade800, null));
-    listSection.add(createSection(
-        "Invite Friends",
-        "images/ic_invite_friends.png",
-        Colors.indigo.shade800,
-        InviteFriendsPage()));
-    listSection.add(createSection("About Us", "images/ic_about_us.png",
-        Colors.black.withOpacity(0.8), AboutPage()));
-    listSection.add(createSection(
-        "Logout", "images/ic_logout.png", Colors.red.withOpacity(0.7), null));
+    listSection.add(createSection("Thông báo", "images/ic_notification.png", Colors.blue.shade800, NotificationPage()));
+    listSection.add(createSection("About Us", "images/ic_about_us.png", Colors.black.withOpacity(0.8), AboutPage()));
+    listSection.add(createSection("Đăng xuất", "images/ic_logout.png", Colors.red.withOpacity(0.7), null));
   }
 
   createSection(String title, String icon, Color color, Widget widget) {
@@ -56,17 +51,14 @@ class _ProfilePage1State extends State<ProfilePage1> {
                 width: double.infinity,
                 decoration: BoxDecoration(
                     color: Colors.black.withOpacity(0.5),
-                    borderRadius: BorderRadius.only(
-                        bottomLeft: Radius.circular(10),
-                        bottomRight: Radius.circular(10))),
+                    borderRadius: BorderRadius.only(bottomLeft: Radius.circular(10), bottomRight: Radius.circular(10))),
                 child: Stack(
                   children: <Widget>[
                     Positioned(
                       child: Container(
                         width: 200,
                         height: 200,
-                        decoration: BoxDecoration(
-                            color: Colors.black, shape: BoxShape.circle),
+                        decoration: BoxDecoration(color: Colors.black, shape: BoxShape.circle),
                       ),
                       top: -40,
                       left: -40,
@@ -75,9 +67,7 @@ class _ProfilePage1State extends State<ProfilePage1> {
                       child: Container(
                         width: 300,
                         height: 260,
-                        decoration: BoxDecoration(
-                            color: Colors.black.withOpacity(0.5),
-                            shape: BoxShape.circle),
+                        decoration: BoxDecoration(color: Colors.black.withOpacity(0.5), shape: BoxShape.circle),
                       ),
                       top: -40,
                       left: -40,
@@ -87,9 +77,7 @@ class _ProfilePage1State extends State<ProfilePage1> {
                         child: Container(
                           width: 400,
                           height: 260,
-                          decoration: BoxDecoration(
-                              color: Colors.black.withOpacity(0.5),
-                              shape: BoxShape.circle),
+                          decoration: BoxDecoration(color: Colors.black.withOpacity(0.5), shape: BoxShape.circle),
                         ),
                       ),
                       top: -40,
@@ -100,9 +88,8 @@ class _ProfilePage1State extends State<ProfilePage1> {
               ),
               Container(
                 child: Text(
-                  "Profile",
-                  style: CustomTextStyle.textFormFieldBold
-                      .copyWith(color: Colors.white, fontSize: 24),
+                  "Tài khoản",
+                  style: CustomTextStyle.textFormFieldBold.copyWith(color: Colors.white, fontSize: 24),
                 ),
                 margin: EdgeInsets.only(top: 72, left: 24),
               ),
@@ -119,20 +106,15 @@ class _ProfilePage1State extends State<ProfilePage1> {
                         children: <Widget>[
                           Container(
                             child: Card(
-                              margin:
-                                  EdgeInsets.only(top: 50, left: 16, right: 16),
+                              margin: EdgeInsets.only(top: 50, left: 16, right: 16),
                               color: Colors.white,
-                              shape: RoundedRectangleBorder(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(16))),
+                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(16))),
                               child: Column(
                                 children: <Widget>[
                                   Container(
-                                    margin: EdgeInsets.only(
-                                        left: 8, top: 8, right: 8, bottom: 8),
+                                    margin: EdgeInsets.only(left: 8, top: 8, right: 8, bottom: 8),
                                     child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                       children: <Widget>[
                                         IconButton(
                                           icon: Icon(Icons.settings),
@@ -145,11 +127,8 @@ class _ProfilePage1State extends State<ProfilePage1> {
                                           color: Colors.black,
                                           iconSize: 24,
                                           onPressed: () {
-                                            Navigator.push(
-                                                context,
-                                                new MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        EditProfilePage()));
+                                            Navigator.push(context,
+                                                new MaterialPageRoute(builder: (context) => EditProfilePage()));
                                           },
                                         )
                                       ],
@@ -159,19 +138,14 @@ class _ProfilePage1State extends State<ProfilePage1> {
                                     height: 8,
                                   ),
                                   Text(
-                                    "Riya Patel",
+                                    Util.userInfo.data.username,
                                     style: CustomTextStyle.textFormFieldBlack
-                                        .copyWith(
-                                            color: Colors.black,
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.w900),
+                                        .copyWith(color: Colors.black, fontSize: 16, fontWeight: FontWeight.w900),
                                   ),
                                   Text(
-                                    "riya@gmail.com",
+                                    Util.userInfo.data.email,
                                     style: CustomTextStyle.textFormFieldMedium
-                                        .copyWith(
-                                            color: Colors.grey.shade700,
-                                            fontSize: 14),
+                                        .copyWith(color: Colors.grey.shade700, fontSize: 14),
                                   ),
                                   SizedBox(
                                     height: 16,
@@ -189,16 +163,18 @@ class _ProfilePage1State extends State<ProfilePage1> {
                           Align(
                             alignment: Alignment.topCenter,
                             child: Container(
-                              decoration: BoxDecoration(
-                                  border: Border.all(
-                                      color: Colors.grey.shade400, width: 2),
-                                  shape: BoxShape.circle,
-                                  image: DecorationImage(
-                                      image: AssetImage(
-                                          "images/ic_user_profile.png"),
-                                      fit: BoxFit.contain)),
                               width: 100,
                               height: 100,
+                              child: InitialNameAvatar(
+                                Util.userInfo.data.username,
+                                circleAvatar: true,
+                                borderColor: Colors.white,
+                                borderSize: 2.0,
+                                backgroundColor: Colors.blue,
+                                foregroundColor: Colors.white,
+                                padding: 10.0,
+                                textSize: 32.0,
+                              ),
                             ),
                           ),
                         ],
@@ -224,50 +200,49 @@ class _ProfilePage1State extends State<ProfilePage1> {
       shrinkWrap: true,
       padding: EdgeInsets.all(0),
       itemBuilder: (context, index) {
-        return createListViewItem(listSection[index]);
+        return InkWell(
+            onTap: () async {
+              print(index);
+              if (index == 2) {
+                await PreferUtil.setString(Constant.KEY_USER_NAME, '');
+                await PreferUtil.setString(Constant.KEY_PASSWORD, '');
+                Navigator.pushReplacement(context, new MaterialPageRoute(builder: (context) => Login()));
+              }
+            },
+            child: createListViewItem(listSection[index]));
       },
       itemCount: listSection.length,
     );
   }
 
-  createListViewItem(ListProfileSection listSection) {
+  Widget createListViewItem(ListProfileSection listSection) {
     return Builder(builder: (context) {
-      return InkWell(
-        splashColor: Colors.teal.shade200,
-        onTap: () {
-          if (listSection.widget != null) {
-            Navigator.of(context).push(new MaterialPageRoute(
-                builder: (context) => listSection.widget));
-          }
-        },
-        child: Container(
-          margin: EdgeInsets.only(left: 16, right: 12),
-          padding: EdgeInsets.only(top: 20, bottom: 12),
-          child: Row(
-            children: <Widget>[
-              Image(
-                image: AssetImage(listSection.icon),
-                width: 20,
-                height: 20,
-                color: Colors.grey.shade500,
-              ),
-              SizedBox(
-                width: 14,
-              ),
-              Text(
-                listSection.title,
-                style: CustomTextStyle.textFormFieldBold
-                    .copyWith(color: Colors.grey.shade500),
-              ),
-              Spacer(
-                flex: 1,
-              ),
-              Icon(
-                Icons.navigate_next,
-                color: Colors.grey.shade500,
-              )
-            ],
-          ),
+      return Container(
+        margin: EdgeInsets.only(left: 16, right: 12),
+        padding: EdgeInsets.only(top: 20, bottom: 12),
+        child: Row(
+          children: <Widget>[
+            Image(
+              image: AssetImage(listSection.icon),
+              width: 20,
+              height: 20,
+              color: Colors.grey.shade500,
+            ),
+            SizedBox(
+              width: 14,
+            ),
+            Text(
+              listSection.title,
+              style: CustomTextStyle.textFormFieldBold.copyWith(color: Colors.grey.shade500),
+            ),
+            Spacer(
+              flex: 1,
+            ),
+            Icon(
+              Icons.navigate_next,
+              color: Colors.grey.shade500,
+            )
+          ],
         ),
       );
     });
