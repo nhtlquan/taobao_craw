@@ -96,4 +96,28 @@ class ApiService {
     params["data"] = encryptString;
     return HttpHelper.requestApi(url, params, HttpMethod.get, false, true);
   }
+  //thêm đơn hàng
+  static Future<Response> getNotification(String encryptString) {
+    final action = "notify-list";
+    final url = ApiService.BASE_URL + ApiService.API_VERSION + action;
+    var params = Map<String, String>();
+    params["data"] = encryptString;
+    return HttpHelper.requestApi(url, params, HttpMethod.post, false, true);
+  }
+  //thêm đơn hàng
+  static Future<Response> addTokenNotifi(String encryptString) {
+    final action = "driver-add";
+    final url = ApiService.BASE_URL + ApiService.API_VERSION + action;
+    var params = Map<String, String>();
+    params["data"] = encryptString;
+    return HttpHelper.requestApi(url, params, HttpMethod.post, false, true);
+  }
+  //thêm đơn hàng
+  static Future<Response> removeTokenNotifi(String encryptString) {
+    final action = "driver-move";
+    final url = ApiService.BASE_URL + ApiService.API_VERSION + action;
+    var params = Map<String, String>();
+    params["data"] = encryptString;
+    return HttpHelper.requestApi(url, params, HttpMethod.post, false, true);
+  }
 }

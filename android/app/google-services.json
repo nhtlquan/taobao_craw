@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "381645028074",
+    "project_id": "oms-notification-de829",
+    "storage_bucket": "oms-notification-de829.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:381645028074:android:b9bec9ae33f12218f47593",
+        "android_client_info": {
+          "package_name": "com.order.taobao"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "381645028074-fghei12vgcrnqvdfv6ql445e4pnjiqi4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBu2pnf_dOosjJXSP9PjPe0bN8Ove_fvqY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "381645028074-fghei12vgcrnqvdfv6ql445e4pnjiqi4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

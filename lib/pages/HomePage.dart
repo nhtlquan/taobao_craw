@@ -1,19 +1,21 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_app_test/helper/ApiService.dart';
 import 'package:flutter_app_test/model/ConfigGlobal.dart';
 import 'package:flutter_app_test/pages/WebViewPage.dart';
 import 'package:flutter_app_test/utils/CustomTextStyle.dart';
 import 'package:flutter_app_test/utils/CustomUtils.dart';
 import 'package:flutter_app_test/utils/ResourceUtil.dart';
+import 'package:flutter_app_test/utils/Util.dart';
 import 'package:flutter_app_test/widget/HeaderWidget.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:flutter_app_test/utils/Util.dart';
 
-import 'ProductDetailsPage.dart';
 import 'SeeAllProductPage.dart';
-
+import 'package:flutter_app_test/ResourceUtil.dart' as SUB;
 class HomePage extends StatefulWidget {
   @override
   _HomePageState createState() => _HomePageState();
@@ -26,6 +28,30 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    getConfig();
+  }
+
+  getConfig() async {
+    Util.listOderType.add(new TypeOder('', 'Tất cả'));
+    Util.listOderType.add(new TypeOder('0', 'Đơn chờ xử lý'));
+    Util.listOderType.add(new TypeOder('1', 'Đơn chờ cọc'));
+    Util.listOderType.add(new TypeOder('2', 'Đơn chờ phát'));
+    Util.listOderType.add(new TypeOder('3', 'Đang vận chuyển'));
+    Util.listOderType.add(new TypeOder('4', 'Đơn đã về VN'));
+    Util.listOderType.add(new TypeOder('5', 'Lưu kho'));
+    Util.listOderType.add(new TypeOder('6', 'Đã thanh toán'));
+    Util.listOderType.add(new TypeOder('-1', 'Đơn bị hủy'));
+    Map params = new Map<String, dynamic>();
+    var encryptString = await SUB.ResourceUtil.stringEncryption(params);
+    final response = await ApiService.systemConfig(encryptString);
+    if (response.statusCode == 200) {
+      var data = json.decode(response.data);
+      if (data['status'] == 'no') {
+      } else {
+        Util.configGlobal = ConfigGlobal.fromJson(json.decode(response.data));
+        setState(() {});
+      }
+    }
   }
 
   @override
@@ -158,7 +184,6 @@ class _HomePageState extends State<HomePage> {
                   child: SvgPicture.network(
                     bankList.logo,
                     fit: BoxFit.fitWidth,
-
                   ),
                 ),
                 SizedBox(
@@ -178,10 +203,8 @@ class _HomePageState extends State<HomePage> {
                         Utils.getSizedBox(height: 4),
                         Text(
                           bankList.stk,
-
-                          style: CustomTextStyle.textFormFieldRegular.copyWith(decoration: TextDecoration.underline,color:
-                          Colors.blueAccent, fontSize:
-                          12),
+                          style: CustomTextStyle.textFormFieldRegular
+                              .copyWith(decoration: TextDecoration.underline, color: Colors.blueAccent, fontSize: 12),
                         ),
                         Utils.getSizedBox(height: 4),
                         Text(
@@ -263,7 +286,6 @@ class _HomePageState extends State<HomePage> {
       ],
     );
   }
-
 
   searchWidget() {
     return Container(

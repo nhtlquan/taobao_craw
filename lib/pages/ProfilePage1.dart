@@ -1,12 +1,16 @@
+import 'dart:convert';
+
 import 'package:auro_avatar/auro_avatar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app_test/Util/PreferUtil.dart';
+import 'package:flutter_app_test/helper/ApiService.dart';
 import 'package:flutter_app_test/helper/Constant.dart';
 import 'package:flutter_app_test/login.dart';
 import 'package:flutter_app_test/model/list_profile_section.dart';
 import 'package:flutter_app_test/utils/CustomTextStyle.dart';
 import 'package:flutter_app_test/utils/Util.dart';
 
+import '../ResourceUtil.dart';
 import 'AboutUsPage.dart';
 import 'EditProfilePage.dart';
 import 'InviteFriendsPage.dart';
@@ -127,8 +131,8 @@ class _ProfilePage1State extends State<ProfilePage1> {
                                           color: Colors.black,
                                           iconSize: 24,
                                           onPressed: () {
-                                            Navigator.push(context,
-                                                new MaterialPageRoute(builder: (context) => EditProfilePage()));
+                                            // Navigator.push(context,
+                                            //     new MaterialPageRoute(builder: (context) => EditProfilePage()));
                                           },
                                         )
                                       ],
@@ -204,6 +208,7 @@ class _ProfilePage1State extends State<ProfilePage1> {
             onTap: () async {
               print(index);
               if (index == 2) {
+                await removeToken();
                 await PreferUtil.setString(Constant.KEY_USER_NAME, '');
                 await PreferUtil.setString(Constant.KEY_PASSWORD, '');
                 Navigator.pushReplacement(context, new MaterialPageRoute(builder: (context) => Login()));
@@ -214,7 +219,18 @@ class _ProfilePage1State extends State<ProfilePage1> {
       itemCount: listSection.length,
     );
   }
-
+  void removeToken() async{
+    Map params = new Map<String, dynamic>();
+    params['username'] = Util.userInfo.data.username;
+    params['driver_id'] = Util.tokenFireBase;
+    if (Platform.isAndroid) {
+      params['driver_type'] = 'Android';
+    } else if (Platform.isIOS) {
+      params['driver_type'] = 'Ios';
+    }
+    var encryptString = await ResourceUtil.stringEncryption(params);
+    final response = await ApiService.removeTokenNotifi(encryptString);
+  }
   Widget createListViewItem(ListProfileSection listSection) {
     return Builder(builder: (context) {
       return Container(

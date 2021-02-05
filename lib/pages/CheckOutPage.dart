@@ -66,8 +66,8 @@ class _CheckOutPageState extends State<CheckOutPage> {
           children: <Widget>[
             Expanded(
               child: Container(
-                child: ListView(
-                  children: <Widget>[selectedAddressSection(), standardDelivery(), checkoutItem(), priceSection()],
+                child: Column(
+                  children: <Widget>[  checkoutItem(),Spacer(), priceSection()],
                 ),
               ),
               flex: 90,
@@ -181,46 +181,46 @@ class _CheckOutPageState extends State<CheckOutPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              SizedBox(
-                height: 6,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Text(
-                    "Lê Văn Quân (Mặc định)",
-                    style: CustomTextStyle.textFormFieldSemiBold.copyWith(fontSize: 14),
-                  ),
-                  Container(
-                    padding: EdgeInsets.only(left: 8, right: 8, top: 4, bottom: 4),
-                    decoration: BoxDecoration(
-                        shape: BoxShape.rectangle,
-                        color: Colors.grey.shade300,
-                        borderRadius: BorderRadius.all(Radius.circular(16))),
-                    child: Text(
-                      "NHÀ",
-                      style:
-                          CustomTextStyle.textFormFieldBlack.copyWith(color: Colors.indigoAccent.shade200, fontSize: 8),
-                    ),
-                  )
-                ],
-              ),
-              createAddressText("232 Phạm Văn đồng", 16),
-              createAddressText("Hà Nội - 10000", 6),
-              createAddressText("Việt Nam", 6),
-              SizedBox(
-                height: 6,
-              ),
-              RichText(
-                text: TextSpan(children: [
-                  TextSpan(
-                      text: "Số điện thoại : ",
-                      style: CustomTextStyle.textFormFieldMedium.copyWith(fontSize: 12, color: Colors.grey.shade800)),
-                  TextSpan(
-                      text: "01234567989",
-                      style: CustomTextStyle.textFormFieldBold.copyWith(color: Colors.black, fontSize: 12)),
-                ]),
-              ),
+              // SizedBox(
+              //   height: 6,
+              // ),
+              // Row(
+              //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //   children: <Widget>[
+              //     Text(
+              //       "Lê Văn Quân (Mặc định)",
+              //       style: CustomTextStyle.textFormFieldSemiBold.copyWith(fontSize: 14),
+              //     ),
+              //     Container(
+              //       padding: EdgeInsets.only(left: 8, right: 8, top: 4, bottom: 4),
+              //       decoration: BoxDecoration(
+              //           shape: BoxShape.rectangle,
+              //           color: Colors.grey.shade300,
+              //           borderRadius: BorderRadius.all(Radius.circular(16))),
+              //       child: Text(
+              //         "NHÀ",
+              //         style:
+              //             CustomTextStyle.textFormFieldBlack.copyWith(color: Colors.indigoAccent.shade200, fontSize: 8),
+              //       ),
+              //     )
+              //   ],
+              // ),
+              // createAddressText("232 Phạm Văn đồng", 16),
+              // createAddressText("Hà Nội - 10000", 6),
+              // createAddressText("Việt Nam", 6),
+              // SizedBox(
+              //   height: 6,
+              // ),
+              // RichText(
+              //   text: TextSpan(children: [
+              //     TextSpan(
+              //         text: "Số điện thoại : ",
+              //         style: CustomTextStyle.textFormFieldMedium.copyWith(fontSize: 12, color: Colors.grey.shade800)),
+              //     TextSpan(
+              //         text: "01234567989",
+              //         style: CustomTextStyle.textFormFieldBold.copyWith(color: Colors.black, fontSize: 12)),
+              //   ]),
+              // ),
               SizedBox(
                 height: 16,
               ),
@@ -318,7 +318,7 @@ class _CheckOutPageState extends State<CheckOutPage> {
                 height: 5,
               ),
               Text(
-                "Nhận hàng vào 24 Th01 - 26 Th01 | Viettel Post",
+                "Viettel Post",
                 style: CustomTextStyle.textFormFieldMedium.copyWith(
                   color: Colors.black,
                   fontSize: 12,

@@ -1,5 +1,6 @@
 import 'package:auro_avatar/auro_avatar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app_test/pages/NotificationPage.dart';
 import 'package:flutter_app_test/utils/ResourceUtil.dart';
 import 'package:flutter_app_test/utils/Util.dart';
 
@@ -27,23 +28,28 @@ class HeaderWidget extends StatelessWidget {
         right: 24,
         top: 24,
         child: SafeArea(
-          child: Stack(
-            children: [
-              Icon(
-                Icons.notifications_none,
-                color: Colors.white,
-                size: 24,
-              ),
-              Positioned(
-                right: 0,
-                top: 0,
-                child: Container(
-                  width: 8,
-                  height: 8,
-                  decoration: BoxDecoration(color: Colors.orange, borderRadius: BorderRadius.circular(8)),
+          child: InkWell(
+            onTap: (){
+               Navigator.push(context, new MaterialPageRoute(builder: (context) => NotificationPage()));
+            },
+            child: Stack(
+              children: [
+                Icon(
+                  Icons.notifications_none,
+                  color: Colors.white,
+                  size: 24,
                 ),
-              ),
-            ],
+                Positioned(
+                  right: 0,
+                  top: 0,
+                  child: Container(
+                    width: 8,
+                    height: 8,
+                    decoration: BoxDecoration(color: Colors.orange, borderRadius: BorderRadius.circular(8)),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),

@@ -28,6 +28,7 @@ class _MyAppState extends State<MyApp> {
   List<PhoneCallEvent> _phoneEvents;
   List<NoteOfflineModel> listNotes = [];
 
+
   /// The result of the user typing
   String _phoneNumber;
 

@@ -64,11 +64,11 @@ class _SignUpState extends State<SignUp> {
             ),
             Expanded(
               child: Image(
-                  image: AssetImage("images/ic_logo.png"),
+                  image: AssetImage("images/logo.jpg"),
                   color: Colors.blue,
-                  height: 140,
+                  height: 100,
                   alignment: Alignment.center,
-                  width: 200),
+                  width: 150),
               flex: 20,
             ),
             Expanded(

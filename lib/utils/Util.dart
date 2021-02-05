@@ -13,6 +13,8 @@ class Util {
   static int moneyRate = 3500;
   static int balance = 3500;
   static UserInfo userInfo;
+  static String tokenFireBase = '';
+  static bool isShowDialog = false;
   static ConfigGlobal configGlobal;
 
   static void showToast(String message) {

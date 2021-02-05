@@ -45,8 +45,8 @@ class _LoginState extends State<Login> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    loginEmailController = new TextEditingController(text: '0398497046');
-    loginPasswordController = new TextEditingController(text: '123456');
+    loginEmailController = new TextEditingController(text: '');
+    loginPasswordController = new TextEditingController(text: '');
     initData();
   }
 
@@ -69,11 +69,11 @@ class _LoginState extends State<Login> {
             children: <Widget>[
               Expanded(
                 child: Image(
-                    image: AssetImage("images/ic_logo.png"),
+                    image: AssetImage("images/logo.jpg"),
                     color: Colors.blue,
-                    height: 140,
+                    height: 100,
                     alignment: Alignment.center,
-                    width: 200),
+                    width: 150),
                 flex: 40,
               ),
               Expanded(
