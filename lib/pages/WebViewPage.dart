@@ -3,13 +3,19 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app_test/model/ItemDetail.dart';
+import 'package:flutter_app_test/model/ModelProduct.dart';
 import 'package:flutter_app_test/utils/Util.dart';
 import 'package:flutter_app_test/widgets/PageWidget.dart';
+import 'package:html_unescape/html_unescape.dart';
 import 'package:translator/translator.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'dart:async';
 import 'package:rxdart/rxdart.dart';
 import 'package:flutter/services.dart' show rootBundle;
+import 'package:html/parser.dart';
+import 'dart:convert' show utf8;
+
+import 'ChoiseProduct1688.dart';
 
 class WebViewExample extends StatefulWidget {
   var url;
@@ -37,6 +43,7 @@ class _WebViewExampleState extends State<WebViewExample> {
   var _isLoadingSubject = BehaviorSubject<bool>.seeded(false);
 
   Stream get isLoadingStream => _isLoadingSubject.stream;
+  ModelProduct modelProduct1688;
 
   @override
   void dispose() {
@@ -80,6 +87,7 @@ class _WebViewExampleState extends State<WebViewExample> {
                       _myController = controller;
                     },
                     onPageStarted: (url) {
+                      currentURL = url;
                       changeViewBottom(url);
                     },
                     javascriptChannels: [
@@ -90,10 +98,11 @@ class _WebViewExampleState extends State<WebViewExample> {
                           }),
                     ].toSet(),
                     onPageFinished: (url) {
-                      currentURL = url;
                       setState(() {
                         _loadedPage = true;
                       });
+                      if(checkWebb1688())
+                        return;
                       _myController.evaluateJavascript(text);
                       changeDataWebview(url);
                     },
@@ -109,13 +118,15 @@ class _WebViewExampleState extends State<WebViewExample> {
             StreamBuilder<Object>(
                 stream: isPageDetailStream,
                 builder: (context, snapshot) {
-                  if (!isPageDetail || widget.isView)
+                  if(widget.isView)
+                    return SizedBox();
+                  if (!isPageDetail )
                     return Container(
                       width: double.infinity,
                       height: 40,
                     );
                   return InkWell(
-                    onTap: () {
+                    onTap: () async {
                       getDataInformation();
                     },
                     child: Container(
@@ -135,7 +146,7 @@ class _WebViewExampleState extends State<WebViewExample> {
                               width: 10,
                             ),
                             Text(
-                              'THÊM VÀO GIỎ HÀNG',
+                              checkWebb1688() ?'CHỌN SẢN PHẨM':'THÊM VÀO GIỎ HÀNG',
                               style: TextStyle(fontSize: 16, color: Colors.white, fontWeight: FontWeight.bold),
                             ),
                           ],
@@ -196,11 +207,38 @@ class _WebViewExampleState extends State<WebViewExample> {
     }
   }
 
-  void getDataInformation() {
-    if (currentURL.contains('https://m.1688.com/offer/'))
-      _myController.evaluateJavascript("javascript:getDetailsInfomation1688()");
+  bool checkWebb1688(){
+      return  currentURL.contains('https://m.1688.com/offer/');
+  }
+
+  void getDataInformation() async {
+    if (currentURL.contains('https://m.1688.com/offer/')) {
+      String docu = await _myController.evaluateJavascript('document.documentElement.innerHTML');
+      //
+      String decoded = json.decode(docu);
+      var content = decoded.split('window.__INIT_DATA=')[1];
+      print('content: ' + content);
+      List<String> content1 = content.split("</script>");
+      var data = content1[0].replaceAll('window.__INIT_DATA=', '');
+
+      data = _parseHtmlString(data);
+      print('data: ' + data);
+      modelProduct1688 = ModelProduct.fromJson(json.decode(data));
+      Navigator.of(context).push(new MaterialPageRoute(
+          builder: (context) => ChoiseProduct1688(
+            modelProduct: modelProduct1688,
+            linkproduct: currentURL,
+          )));
+    }
     else
       _myController.evaluateJavascript("javascript:getDetailsInfomation()");
+  }
+
+  String _parseHtmlString(String htmlString) {
+    final document = parse(htmlString);
+    final String parsedString = parse(document.body.text).documentElement.text;
+
+    return parsedString;
   }
 
   void addItem(String data) async {

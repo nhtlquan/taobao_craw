@@ -15,6 +15,7 @@ class NotificationPage extends StatefulWidget {
 
 class _NotificationPageState extends State<NotificationPage> {
   NotificationModel notificationModel;
+
   @override
   void initState() {
     // TODO: implement initState
@@ -22,7 +23,7 @@ class _NotificationPageState extends State<NotificationPage> {
     getNotification();
   }
 
-  getNotification() async{
+  getNotification() async {
     Map params = new Map<String, dynamic>();
     params['username'] = Util.userInfo.data.username;
     print(params);
@@ -31,12 +32,9 @@ class _NotificationPageState extends State<NotificationPage> {
     if (response.statusCode == 200) {
       var data = json.decode(response.data);
       if (data['status'] == 'no') {
-
       } else {
-         notificationModel = NotificationModel.fromJson(response.data);
-         setState(() {
-
-         });
+        notificationModel = NotificationModel.fromJson(json.decode(response.data));
+        setState(() {});
       }
     }
   }
@@ -90,11 +88,10 @@ class _NotificationPageState extends State<NotificationPage> {
   Widget createNotificationListItem(Datum item) {
     return Dismissible(
       child: Container(
-        margin: EdgeInsets.symmetric(vertical: 4, horizontal: 4),
+        margin: EdgeInsets.symmetric(vertical: 10, horizontal: 4),
         width: double.infinity,
         decoration: BoxDecoration(
-            borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(10), bottomLeft: Radius.circular(10))),
+            borderRadius: BorderRadius.only(topLeft: Radius.circular(10), bottomLeft: Radius.circular(10))),
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
@@ -103,9 +100,7 @@ class _NotificationPageState extends State<NotificationPage> {
                 width: 4,
                 margin: EdgeInsets.only(right: 4),
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(10),
-                      bottomLeft: Radius.circular(10)),
+                  borderRadius: BorderRadius.only(topLeft: Radius.circular(10), bottomLeft: Radius.circular(10)),
                   color: Colors.green,
                 ),
               ),
@@ -113,6 +108,7 @@ class _NotificationPageState extends State<NotificationPage> {
             ),
             Expanded(
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -120,20 +116,17 @@ class _NotificationPageState extends State<NotificationPage> {
                     children: <Widget>[
                       Text(
                         item.title,
-                        style: CustomTextStyle.textFormFieldBlack
-                            .copyWith(color: Colors.black, fontSize: 16),
+                        style: CustomTextStyle.textFormFieldBlack.copyWith(color: Colors.black, fontSize: 16),
                       ),
-                      IconButton(icon: Icon(Icons.close), onPressed: () {})
                     ],
                   ),
                   Container(
-                    margin: EdgeInsets.only(right: 6),
+                    margin: EdgeInsets.only(right: 6, top: 5),
                     child: Text(
                       item.contents,
                       softWrap: true,
                       textAlign: TextAlign.start,
-                      style: CustomTextStyle.textFormFieldMedium
-                          .copyWith(color: Colors.grey, fontSize: 12),
+                      style: CustomTextStyle.textFormFieldMedium.copyWith(color: Colors.grey, fontSize: 12),
                     ),
                   )
                 ],

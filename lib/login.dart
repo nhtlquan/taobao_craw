@@ -175,6 +175,7 @@ class _LoginState extends State<Login> {
       username = loginEmailController.text.trim();
       password = loginPasswordController.text.trim();
     }
+    print(password);
     if (username.isEmpty) {
       Util.showToast('Vui lòng nhập tên truy cập!');
       return;

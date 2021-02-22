@@ -32,7 +32,7 @@ function changeData1688(){
                 count = 0;
             }else{
                 count = count + 1;
-                document.getElementsByClassName('takla-item-text J_SkuBtnText')[0].textContent =
+                document.getElementsByClassName('specs-text')[0].textContent =
                 'CHON MAU SAC - KICH CO';
             }
         },200);
@@ -187,7 +187,6 @@ function getDetailsInfomation1688(){
                         var lengthModalActive = document.getElementsByClassName('selected-count J_SelectedCount').length;
                         var lengthQuantity = 0;
                         var price_origin="";
-                        var lengcolor = document.getElementsByTagName('sku-1st-prop-item J_SkuSelector_1st_PropItem').length + 1;
                         var lengthQuantity = document.getElementsByTagName('amount-btn amount-down-btn  J_SkuItem_AmountDownBtn').length;
                         if(lengthModal > 0){
                             for(var i = 0 ; i < lengthModalActive ; i++){
