@@ -104,6 +104,14 @@ class ApiService {
     params["data"] = encryptString;
     return HttpHelper.requestApi(url, params, HttpMethod.post, false, true);
   }
+  //lịch sử ví
+  static Future<Response> getHistoryWallet(String encryptString) {
+    final action = "wallet-histories";
+    final url = ApiService.BASE_URL + ApiService.API_VERSION + action;
+    var params = Map<String, String>();
+    params["data"] = encryptString;
+    return HttpHelper.requestApi(url, params, HttpMethod.post, false, true);
+  }
   //thêm đơn hàng
   static Future<Response> addTokenNotifi(String encryptString) {
     final action = "driver-add";

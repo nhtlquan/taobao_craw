@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_app_test/Util/DateTimeUtil.dart';
 import 'package:flutter_app_test/helper/ApiService.dart';
+import 'package:flutter_app_test/model/CountModel.dart';
 import 'package:flutter_app_test/model/ItemDetail.dart';
 import 'package:flutter_app_test/model/OderList.dart';
 import 'package:flutter_app_test/model/UserInfo.dart';
@@ -37,7 +38,7 @@ class _HistoryPageState extends State<HistoryPage> with SingleTickerProviderStat
 
   int cupertinoTabBarIIIValueGetter() => cupertinoTabBarIIIValue;
   String currentType = '';
-  List<Oder> oderLists = [];
+  List<OderItem> oderLists = [];
   TabController tabController;
 
   @override
@@ -54,12 +55,35 @@ class _HistoryPageState extends State<HistoryPage> with SingleTickerProviderStat
       length: Util.listOderType.length,
       vsync: this,
     );
-    // tabController.addListener(() {
-    //   var index = tabController.index;
-    //   if (currentType == Util.listOderType[index].value) return;
-    //   currentType = Util.listOderType[index].value;
-    //   getListOder();
-    // });
+
+    getCount();
+  }
+
+  void getCount() async {
+    Map params = new Map<String, dynamic>();
+    params['username'] = Util.userInfo.data.username;
+    print(params);
+    var encryptString = await ResourceUtil.stringEncryption(params);
+    final response = await ApiService.countOder(encryptString);
+    if (response.statusCode == 200) {
+      var data = json.decode(response.data);
+      if (data['status'] == 'no') {
+      } else {
+        CountModel  countModel = CountModel.fromJson(json.decode(response.data));
+        for(var item in Util.listOderType){
+          if(item.value.isEmpty)
+            continue;
+          for (var itemCount in countModel.data){
+            if (item.value == itemCount.status){
+              item.count = itemCount.num;
+            } else {
+              item.count ='0';
+            }
+          }
+        }
+      }
+    }
+    setState(() {});
   }
 
   @override
@@ -87,7 +111,6 @@ class _HistoryPageState extends State<HistoryPage> with SingleTickerProviderStat
                     labelStyle: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
                     tabs: listTab(),
                   ),
-
                   Expanded(
                     child: TabBarView(
                       controller: tabController,
@@ -105,7 +128,11 @@ class _HistoryPageState extends State<HistoryPage> with SingleTickerProviderStat
 
   List<Tab> listTab() {
     return List<Tab>.generate(Util.listOderType.length, (index) {
-      return Tab(text: Util.listOderType[index].title);
+
+      var title = Util.listOderType[index].title + ' (' + Util.listOderType[index].count.toString() + ')';
+      if(Util.listOderType[index].count==null)
+        title = Util.listOderType[index].title;
+      return Tab(text: title);
     });
   }
 

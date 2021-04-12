@@ -278,6 +278,7 @@ class _WebViewExampleState extends State<WebViewExample> {
     }
     onLoading(false);
     Util.showToast('Thêm vào giỏ hàng thành công!');
+    Util.gioHangSubject.sink.add(null);
   }
 
   void openPopupProperty() {
@@ -365,9 +366,14 @@ class _WebViewExampleState extends State<WebViewExample> {
                       height: 12,
                       decoration: BoxDecoration(color: Colors.red, borderRadius: BorderRadius.circular(20)),
                       child: Center(
-                        child: Text(
-                          Util.listItems.length.toString(),
-                          style: TextStyle(color: Colors.white, fontSize: 10),
+                        child: StreamBuilder<Object>(
+                          stream: Util.gioHangStream,
+                          builder: (context, snapshot) {
+                            return Text(
+                              Util.listItems.length.toString(),
+                              style: TextStyle(color: Colors.white, fontSize: 10),
+                            );
+                          }
                         ),
                       ),
                     ),

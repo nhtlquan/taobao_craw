@@ -6,6 +6,7 @@ import 'package:flutter_app_test/model/ItemDetail.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_app_test/model/UserInfo.dart';
+import 'package:rxdart/rxdart.dart';
 
 class Util {
   static List<TypeOder> listOderType = new List();
@@ -16,6 +17,9 @@ class Util {
   static String tokenFireBase = '';
   static bool isShowDialog = false;
   static ConfigGlobal configGlobal;
+  static var gioHangSubject = BehaviorSubject<bool>.seeded(false);
+
+  static Stream get gioHangStream => gioHangSubject.stream;
 
   static void showToast(String message) {
     Fluttertoast.showToast(
@@ -55,6 +59,7 @@ class Util {
 class TypeOder {
   String value;
   String title;
+  String count;
 
-  TypeOder(this.value, this.title);
+  TypeOder(this.value, this.title,);
 }

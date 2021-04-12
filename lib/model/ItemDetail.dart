@@ -74,6 +74,7 @@ class ItemDetail {
         "link": link == null ? null : link,
         "color": color == null ? property : color,
         "size": size == null ? null : size,
+        "note": note == null ? null : note,
       };
 }
 

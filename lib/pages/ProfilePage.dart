@@ -36,6 +36,8 @@ class _ProfilePageState extends State<ProfilePage> {
         InviteFriendsPage()));
     listSection.add(createSection("About Us", "images/ic_about_us.png",
         Colors.black.withOpacity(0.8), AboutPage()));
+    listSection.add(createSection("About Us", "images/ic_about_us.png",
+        Colors.black.withOpacity(0.8), AboutPage()));
     listSection.add(createSection(
         "Logout", "images/ic_logout.png", Colors.red.withOpacity(0.7), null));
   }

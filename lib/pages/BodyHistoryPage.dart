@@ -14,10 +14,12 @@ import 'package:flutter_app_test/utils/CustomUtils.dart';
 import 'package:flutter_app_test/utils/Util.dart';
 import 'package:flutter_app_test/widgets/PageWidget.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:tabbar/tabbar.dart';
 import '../ResourceUtil.dart';
 import 'BodyHistoryPage.dart';
+import 'DetailPage.dart';
 import 'WebViewPage.dart';
 
 class BodyHistoryPage extends StatefulWidget {
@@ -30,9 +32,10 @@ class BodyHistoryPage extends StatefulWidget {
 }
 
 class _BodyHistoryPageState extends State<BodyHistoryPage> {
-  List<Oder> oderLists = [];
+  List<OderItem> oderLists = [];
   DateTime starTime;
   DateTime endTime;
+  RefreshController _refreshController = RefreshController(initialRefresh: false);
 
   @override
   void initState() {
@@ -40,6 +43,15 @@ class _BodyHistoryPageState extends State<BodyHistoryPage> {
     super.initState();
     getListOder();
   }
+
+  void _onRefresh() async {
+    // monitor network fetch
+    await getListOder();
+    await Future.delayed(Duration(milliseconds: 1000));
+    // if failed,use refreshFailed()
+    _refreshController.refreshCompleted();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -119,13 +131,19 @@ class _BodyHistoryPageState extends State<BodyHistoryPage> {
           ),
         ),
         Expanded(
-          child: ListView.builder(
-              itemCount: oderLists.length,
-              shrinkWrap: true,
-              padding: EdgeInsets.zero,
-              itemBuilder: (context, position) {
-                return itemHistory(position);
-              }),
+          child: SmartRefresher(
+            enablePullDown: true,
+            enablePullUp: false,
+            controller: _refreshController,
+            onRefresh: _onRefresh,
+            child: ListView.builder(
+                itemCount: oderLists.length,
+                shrinkWrap: true,
+                padding: EdgeInsets.zero,
+                itemBuilder: (context, position) {
+                  return itemHistory(position);
+                }),
+          ),
         ),
       ],
     );
@@ -201,16 +219,12 @@ class _BodyHistoryPageState extends State<BodyHistoryPage> {
     );
   }
 
-  createCartListItem(Oder item) {
+  createCartListItem(OderItem item) {
     return Stack(
       children: <Widget>[
         InkWell(
           onTap: () {
-            Navigator.of(context).push(new MaterialPageRoute(
-                builder: (context) => WebViewExample(
-                  url: item.proInfo.link,
-                  isView: true,
-                )));
+            Navigator.of(context).push(new MaterialPageRoute(builder: (context) => DetailPage(item)));
           },
           child: Container(
             height: 100,
@@ -241,6 +255,13 @@ class _BodyHistoryPageState extends State<BodyHistoryPage> {
                         Utils.getSizedBox(height: 6),
                         Text(
                           sku(item.sku),
+                          maxLines: 1,
+                          softWrap: true,
+                          style: CustomTextStyle.textFormFieldRegular.copyWith(color: Colors.grey, fontSize: 12),
+                        ),
+                        Utils.getSizedBox(height: 6),
+                        Text(
+                          'ID: ' + item.id,
                           maxLines: 1,
                           softWrap: true,
                           style: CustomTextStyle.textFormFieldRegular.copyWith(color: Colors.grey, fontSize: 12),
@@ -279,7 +300,7 @@ class _BodyHistoryPageState extends State<BodyHistoryPage> {
     params['username'] = Util.userInfo.data.username;
     params['ftime'] = starTime == null ? '' : starTime.microsecondsSinceEpoch;
     params['ttime'] = endTime == null ? '' : starTime.millisecondsSinceEpoch;
-    params['len'] = 50;
+    params['len'] = 100;
     params['page'] = 1;
     params['status'] = widget.typeHistory;
     print(params);
@@ -290,12 +311,12 @@ class _BodyHistoryPageState extends State<BodyHistoryPage> {
       if (data['status'] == 'no') {
       } else {
         var oderData = OderList.fromJson(json.decode(response.data));
-        setState(() {
-          oderLists.clear();
-          oderLists = oderData.data;
-        });
+        if (mounted)
+          setState(() {
+            oderLists.clear();
+            oderLists = oderData.data;
+          });
       }
     }
   }
-
 }

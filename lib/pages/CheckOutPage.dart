@@ -427,7 +427,7 @@ class _CheckOutPageState extends State<CheckOutPage> {
               ),
               createPriceItem("Tiền (￥)", Util.intToPriceDouble(totalMoney) + ' ￥', Colors.grey.shade700),
               createPriceItem("Số lương", Util.listItems.length.toString(), Colors.grey.shade700),
-              createPriceItem("Phí vận chuyển", "Miễn phí", Colors.teal.shade300),
+              createPriceItem("Phí vận chuyển", "Chờ kiểm tra", Colors.teal.shade300),
               SizedBox(
                 height: 8,
               ),
@@ -509,6 +509,7 @@ class _CheckOutPageState extends State<CheckOutPage> {
       if (data['status'] == 'no') {
         Util.showToast(data['mess']);
       } else {
+        Util.gioHangSubject.sink.add(null);
         Util.listItems.clear();
         AwesomeDialog(
             context: context,

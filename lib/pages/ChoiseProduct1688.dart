@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app_test/model/ItemDetail.dart';
 import 'package:flutter_app_test/model/ModelProduct.dart';
 import 'package:flutter_app_test/utils/Util.dart';
+import 'package:flutter_app_test/widgets/PageWidget.dart';
 import 'package:translator/translator.dart';
 
 class ChoiseProduct1688 extends StatefulWidget {
@@ -64,204 +65,206 @@ class _ChoiseProduct1688State extends State<ChoiseProduct1688> {
   @override
   Widget build(BuildContext context) {
     if (skuInfoMap != null) priceVND = Util.intToPriceDouble(double.parse(price) * Util.moneyRate);
-    return Material(
-      child: SafeArea(
-        child: Container(
-          padding: EdgeInsets.all(10),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(bottom: 8),
-                child: Row(
+    return PageWidget(
+      appBar: AppBar(
+        backgroundColor: Colors.green,
+        leading: IconButton(
+            icon: Icon(Icons.arrow_back),
+            onPressed: () {
+              Navigator.pop(context);
+            }),
+        title: Text(
+          "Chọn Sản Phẩm",
+          style: TextStyle(color: Colors.white, fontSize: 14),
+        ),
+      ),
+      child: Container(
+        padding: EdgeInsets.all(10),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(bottom: 8),
+              child: Row(
+                children: [
+                  Text(
+                    'Thông tin: ',
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  ),
+                  Spacer(),
+                ],
+              ),
+            ),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Image.network(
+                  image,
+                  height: 150,
+                  width: 150,
+                ),
+                SizedBox(
+                  width: 10,
+                ),
+                Flexible(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        title,
+                        style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: Colors.blue),
+                      ),
+                      SizedBox(
+                        height: 5,
+                      ),
+                      Text(
+                        'Đơn Giá: ￥' + (price ?? '') + (priceVND.isNotEmpty ? ' ($priceVND đ)' : ''),
+                        style: TextStyle(color: Colors.orange),
+                      ),
+                      SizedBox(
+                        height: 5,
+                      ),
+                      if (property.isNotEmpty) Text('Thuộc tính: ' + property),
+                      SizedBox(
+                        height: 5,
+                      ),
+                      if (canBookCount != null) Text('Kho: ' + canBookCount.toString()),
+                    ],
+                  ),
+                )
+              ],
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 8),
+              child: Text(
+                'Sản phẩm: ',
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              ),
+            ),
+            Expanded(
+              child: SingleChildScrollView(
+                child: Column(
                   children: [
-                    Text(
-                      'Thông tin: ',
-                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    GridView.count(
+                      // crossAxisCount is the number of columns
+                      crossAxisCount: 2,
+                      childAspectRatio: 3,
+                      physics: ScrollPhysics(),
+                      scrollDirection: Axis.vertical,
+                      shrinkWrap: true,
+                      // This creates two columns with two items in each column
+                      children: List.generate(listSkuInfoMap.length, (index) {
+                        return itemList(index);
+                      }),
                     ),
-                    Spacer(),
-                    InkWell(
-                        onTap: () {
-                          Navigator.pop(context);
-                        },
-                        child: Icon(
-                          Icons.close,
-                          color: Colors.grey,
-                          size: 32,
-                        ))
                   ],
                 ),
               ),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
+            ),
+            Container(
+              child: Column(
                 children: [
-                  Image.network(
-                    image,
-                    height: 150,
-                    width: 150,
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text('Số lượng'),
+                      SizedBox(
+                        width: 20,
+                      ),
+                      InkWell(
+                        onTap: () {
+                          if (quantity == 0) return;
+                          quantity = quantity - 1;
+                          setState(() {});
+                        },
+                        child: Container(
+                          padding: EdgeInsets.all(5),
+                          decoration: BoxDecoration(color: Colors.blue, borderRadius: BorderRadius.circular(50)),
+                          child: Icon(Icons.remove, color: Colors.white),
+                        ),
+                      ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Text(quantity.toString()),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      InkWell(
+                        onTap: () {
+                          quantity = quantity + 1;
+                          setState(() {});
+                        },
+                        child: Container(
+                          padding: EdgeInsets.all(5),
+                          decoration: BoxDecoration(color: Colors.blue, borderRadius: BorderRadius.circular(50)),
+                          child: Icon(Icons.add, color: Colors.white),
+                        ),
+                      ),
+                    ],
                   ),
                   SizedBox(
-                    width: 10,
+                    height: 10,
                   ),
-                  Flexible(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          title,
-                          style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: Colors.blue),
+                  InkWell(
+                    onTap: () async {
+                      if (skuInfoMap == null) {
+                        Util.showToast('Vui lòng chọn sản phẩm!');
+                        return;
+                      }
+                      ItemDetail itemDetail = new ItemDetail();
+                      itemDetail.property = property;
+                      itemDetail.quantity = quantity.toString();
+                      itemDetail.titleOrigin = title;
+                      itemDetail.nameshop = widget.modelProduct.globalData.tempModel.companyName;
+                      itemDetail.shopId = widget.modelProduct.globalData.tempModel.sellerMemberId;
+                      itemDetail.itemId = widget.modelProduct.globalData.tempModel.offerId;
+                      itemDetail.pricePromotion = price;
+                      itemDetail.priceOrigin = price;
+                      itemDetail.img = image;
+                      itemDetail.imageOrigin = image;
+                      itemDetail.link = widget.linkproduct;
+                      itemDetail.size = property;
+                      Util.listItems.add(itemDetail);
+                      Util.showToast('Thêm vào giỏ hàng thành công!');
+                      Util.gioHangSubject.sink.add(null);
+                    },
+                    child: Container(
+                      width: double.infinity,
+                      height: 40,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(8),
+                        color: Colors.green,
+                      ),
+                      child: Center(
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              Icons.shopping_cart_outlined,
+                              color: Colors.white,
+                            ),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            Text(
+                              'THÊM VÀO GIỎ HÀNG',
+                              style: TextStyle(fontSize: 16, color: Colors.white, fontWeight: FontWeight.bold),
+                            ),
+                          ],
                         ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        Text(
-                          'Đơn Giá: ￥' + (price ?? '') + (priceVND.isNotEmpty ? ' ($priceVND đ)' : ''),
-                          style: TextStyle(color: Colors.orange),
-                        ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        if (property.isNotEmpty) Text('Thuộc tính: ' + property),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        if (canBookCount != null) Text('Kho: ' + canBookCount.toString()),
-                      ],
+                      ),
                     ),
                   )
                 ],
               ),
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 8),
-                child: Text(
-                  'Sản phẩm: ',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                ),
-              ),
-              Expanded(
-                child: SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      GridView.count(
-                        // crossAxisCount is the number of columns
-                        crossAxisCount: 2,
-                        childAspectRatio: 3,
-                        physics: ScrollPhysics(),
-                        scrollDirection: Axis.vertical,
-                        shrinkWrap: true,
-                        // This creates two columns with two items in each column
-                        children: List.generate(listSkuInfoMap.length, (index) {
-                          return itemList(index);
-                        }),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              Container(
-                child: Column(
-                  children: [
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text('Số lượng'),
-                        SizedBox(
-                          width: 20,
-                        ),
-                        InkWell(
-                          onTap: () {
-                            if (quantity == 0) return;
-                            quantity = quantity - 1;
-                            setState(() {});
-                          },
-                          child: Container(
-                            padding: EdgeInsets.all(5),
-                            decoration: BoxDecoration(color: Colors.blue, borderRadius: BorderRadius.circular(50)),
-                            child: Icon(Icons.remove, color: Colors.white),
-                          ),
-                        ),
-                        SizedBox(
-                          width: 10,
-                        ),
-                        Text(quantity.toString()),
-                        SizedBox(
-                          width: 10,
-                        ),
-                        InkWell(
-                          onTap: () {
-                            quantity = quantity + 1;
-                            setState(() {});
-                          },
-                          child: Container(
-                            padding: EdgeInsets.all(5),
-                            decoration: BoxDecoration(color: Colors.blue, borderRadius: BorderRadius.circular(50)),
-                            child: Icon(Icons.add, color: Colors.white),
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    InkWell(
-                      onTap: () async {
-                        if (skuInfoMap == null) {
-                          Util.showToast('Vui lòng chọn sản phẩm!');
-                          return;
-                        }
-                        ItemDetail itemDetail = new ItemDetail();
-                        itemDetail.property = property;
-                        itemDetail.quantity = quantity.toString();
-                        itemDetail.titleOrigin = title;
-                        itemDetail.nameshop = widget.modelProduct.globalData.tempModel.companyName;
-                        itemDetail.shopId = widget.modelProduct.globalData.tempModel.sellerMemberId;
-                        itemDetail.itemId = widget.modelProduct.globalData.tempModel.offerId;
-                        itemDetail.pricePromotion = price;
-                        itemDetail.priceOrigin = price;
-                        itemDetail.img = image;
-                        itemDetail.imageOrigin = image;
-                        itemDetail.link = widget.linkproduct;
-                        itemDetail.size = property;
-                        Util.listItems.add(itemDetail);
-                        Util.showToast('Thêm vào giỏ hàng thành công!');
-                      },
-                      child: Container(
-                        width: double.infinity,
-                        height: 40,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(8),
-                          color: Colors.green,
-                        ),
-                        child: Center(
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(
-                                Icons.shopping_cart_outlined,
-                                color: Colors.white,
-                              ),
-                              SizedBox(
-                                width: 10,
-                              ),
-                              Text(
-                                'THÊM VÀO GIỎ HÀNG',
-                                style: TextStyle(fontSize: 16, color: Colors.white, fontWeight: FontWeight.bold),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    )
-                  ],
-                ),
-              )
-            ],
-          ),
+            )
+          ],
         ),
       ),
     );
@@ -307,8 +310,8 @@ class _ChoiseProduct1688State extends State<ChoiseProduct1688> {
 
   findImageByName(String name) {
     for (var item in widget.modelProduct.globalData.skuModel.skuProps[0].value) {
-      if (name.contains(item.name)) return item.imageUrl ?? '';
+      if (name.contains(item.name) && item.imageUrl!=null  && item.imageUrl.isNotEmpty) return item.imageUrl ;
     }
-    return '';
+    return widget.modelProduct.globalData.tempModel.defaultOfferImg;
   }
 }

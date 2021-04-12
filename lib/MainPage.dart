@@ -34,10 +34,16 @@ class _MainState extends State<Main> {
   }
 
   notification() async{
-    await Firebase.initializeApp();
     _firebaseMessaging.requestNotificationPermissions();
     _firebaseMessaging.configure(
+      onMessage: (Map<String, dynamic> message) async {
+        print('on message $message');
+      },
+      onResume: (Map<String, dynamic> message) async {
+        print('on resume $message');
+      },
       onLaunch: (Map<String, dynamic> message) async {
+        print('on launch $message');
         if(Util.isShowDialog = true)
           return;
         Util.isShowDialog = true;
@@ -45,11 +51,6 @@ class _MainState extends State<Main> {
             new MaterialPageRoute(builder: (context) => NotificationPage()));
       },
     );
-    _firebaseMessaging
-        .requestNotificationPermissions(const IosNotificationSettings(sound: true, badge: true, alert: true));
-    _firebaseMessaging.onIosSettingsRegistered.listen((IosNotificationSettings settings) {
-      print("Settings registered: $settings");
-    });
     _firebaseMessaging.getToken().then((String token) {
       assert(token != null);
       Util.tokenFireBase = token;
@@ -112,13 +113,18 @@ class _MainState extends State<Main> {
                       minWidth: 12,
                       minHeight: 12,
                     ),
-                    child: new Text(
-                      Util.listItems.length.toString(),
-                      style: new TextStyle(
-                        color: Colors.white,
-                        fontSize: 8,
-                      ),
-                      textAlign: TextAlign.center,
+                    child: StreamBuilder<Object>(
+                      stream: Util.gioHangStream,
+                      builder: (context, snapshot) {
+                        return new Text(
+                          Util.listItems.length.toString(),
+                          style: new TextStyle(
+                            color: Colors.white,
+                            fontSize: 8,
+                          ),
+                          textAlign: TextAlign.center,
+                        );
+                      }
                     ),
                   ),
                 )

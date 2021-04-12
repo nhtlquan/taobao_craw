@@ -19,13 +19,13 @@ class OderList {
   final String status;
   final String mess;
   final int len;
-  final List<Oder> data;
+  final List<OderItem> data;
 
   factory OderList.fromJson(Map<String, dynamic> json) => OderList(
     status: json["status"],
     mess: json["mess"],
     len: json["len"],
-    data: List<Oder>.from(json["data"].map((x) => Oder.fromJson(x))),
+    data: List<OderItem>.from(json["data"].map((x) => OderItem.fromJson(x))),
   );
 
   Map<String, dynamic> toJson() => {
@@ -36,8 +36,8 @@ class OderList {
   };
 }
 
-class Oder {
-  Oder({
+class OderItem {
+  OderItem({
     this.id,
     this.parid,
     this.oid,
@@ -123,7 +123,7 @@ class Oder {
   final String ischeck;
   final String isactive;
 
-  factory Oder.fromJson(Map<String, dynamic> json) => Oder(
+  factory OderItem.fromJson(Map<String, dynamic> json) => OderItem(
     id: json["id"],
     parid: json["parid"] == null ? null : json["parid"],
     oid: json["oid"],

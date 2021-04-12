@@ -13,6 +13,7 @@ import 'package:flutter_app_test/utils/Util.dart';
 import '../ResourceUtil.dart';
 import 'AboutUsPage.dart';
 import 'EditProfilePage.dart';
+import 'HistoryWalletPage.dart';
 import 'InviteFriendsPage.dart';
 import 'NotificationPage.dart';
 
@@ -32,6 +33,8 @@ class _ProfilePage1State extends State<ProfilePage1> {
   }
 
   void createListItem() {
+    listSection.add(createSection("Lịch sử ví", "images/ic_notification.png", Colors.blue.shade800, HistoryWalletPage
+      ()));
     listSection.add(createSection("Thông báo", "images/ic_notification.png", Colors.blue.shade800, NotificationPage()));
     listSection.add(createSection("About Us", "images/ic_about_us.png", Colors.black.withOpacity(0.8), AboutPage()));
     listSection.add(createSection("Đăng xuất", "images/ic_logout.png", Colors.red.withOpacity(0.7), null));
@@ -207,7 +210,13 @@ class _ProfilePage1State extends State<ProfilePage1> {
         return InkWell(
             onTap: () async {
               print(index);
-              if (index == 2) {
+              if (index == 0) {
+                Navigator.push(context, new MaterialPageRoute(builder: (context) => HistoryWalletPage()));
+              }
+              if (index == 1) {
+                Navigator.push(context, new MaterialPageRoute(builder: (context) => NotificationPage()));
+              }
+              if (index == 3) {
                 await removeToken();
                 await PreferUtil.setString(Constant.KEY_USER_NAME, '');
                 await PreferUtil.setString(Constant.KEY_PASSWORD, '');

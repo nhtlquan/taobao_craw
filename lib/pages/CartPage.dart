@@ -191,7 +191,7 @@ class _CartPageState extends State<CartPage> {
                 Navigator.of(context).push(new MaterialPageRoute(
                     builder: (context) => WebViewExample(
                           url: element.link,
-                          isView: true,
+                          isView: false,
                         )));
               },
               child: createCartListItem(element));

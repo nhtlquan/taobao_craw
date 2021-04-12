@@ -2,11 +2,13 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_app_test/ResourceUtil.dart';
+import 'package:flutter_app_test/Util/DateTimeUtil.dart';
 import 'package:flutter_app_test/helper/ApiService.dart';
 import 'package:flutter_app_test/model/NotificationModel.dart';
 import 'package:flutter_app_test/utils/CustomTextStyle.dart';
 import 'package:flutter_app_test/utils/CustomUtils.dart';
 import 'package:flutter_app_test/utils/Util.dart';
+import 'package:flutter_app_test/widgets/PageWidget.dart';
 
 class NotificationPage extends StatefulWidget {
   @override
@@ -41,28 +43,28 @@ class _NotificationPageState extends State<NotificationPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return PageWidget(
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.green,
         title: Text(
           "Thông báo",
-          style: CustomTextStyle.textFormFieldBold.copyWith(fontSize: 18),
+          style: CustomTextStyle.textFormFieldBold.copyWith(fontSize: 18,color: Colors.white),
         ),
         leading: IconButton(
             icon: Icon(
               Icons.arrow_back,
-              color: Colors.black,
+              color: Colors.white,
             ),
             onPressed: () {
               Navigator.of(context).pop();
             }),
       ),
-      body: ListView.builder(
+      child: ListView.builder(
         itemBuilder: (context, index) {
           var item = notificationModel.data[index];
           return createNotificationListItem(item);
         },
-        itemCount: notificationModel.data.length,
+        itemCount: notificationModel==null?0:notificationModel.data.length,
       ),
     );
   }
@@ -86,72 +88,46 @@ class _NotificationPageState extends State<NotificationPage> {
   }*/
 
   Widget createNotificationListItem(Datum item) {
-    return Dismissible(
-      child: Container(
-        margin: EdgeInsets.symmetric(vertical: 10, horizontal: 4),
-        width: double.infinity,
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.only(topLeft: Radius.circular(10), bottomLeft: Radius.circular(10))),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            Expanded(
-              child: Container(
-                width: 4,
-                margin: EdgeInsets.only(right: 4),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.only(topLeft: Radius.circular(10), bottomLeft: Radius.circular(10)),
-                  color: Colors.green,
-                ),
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisSize: MainAxisSize.max,
+            children: <Widget>[
+              Text(
+                item.title,
+                style: CustomTextStyle.textFormFieldBlack.copyWith(color: Colors.black, fontSize: 16),
               ),
-              flex: 02,
+            ],
+          ),
+          Container(
+            margin: EdgeInsets.only(right: 6, top: 5),
+            child: Text(
+                item.contents,
+              softWrap: true,
+              textAlign: TextAlign.start,
+              style: CustomTextStyle.textFormFieldMedium.copyWith(color: Colors.grey, fontSize: 12),
             ),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    mainAxisSize: MainAxisSize.max,
-                    children: <Widget>[
-                      Text(
-                        item.title,
-                        style: CustomTextStyle.textFormFieldBlack.copyWith(color: Colors.black, fontSize: 16),
-                      ),
-                    ],
-                  ),
-                  Container(
-                    margin: EdgeInsets.only(right: 6, top: 5),
-                    child: Text(
-                      item.contents,
-                      softWrap: true,
-                      textAlign: TextAlign.start,
-                      style: CustomTextStyle.textFormFieldMedium.copyWith(color: Colors.grey, fontSize: 12),
-                    ),
-                  )
-                ],
-              ),
-              flex: 98,
-            )
-          ],
-        ),
-      ),
-      key: Key("key_1"),
-      direction: DismissDirection.endToStart,
-      background: Container(
-        color: Colors.green,
-        child: Row(
-          mainAxisSize: MainAxisSize.max,
-          mainAxisAlignment: MainAxisAlignment.end,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            Icon(
-              Icons.delete,
-              color: Colors.white,
+          ),
+          Container(
+            margin: EdgeInsets.only(right: 6, top: 5),
+            child: Text(
+               DateTimeUtil.getDateTimeStamp(int.parse(item.cdate)),
+              softWrap: true,
+              textAlign: TextAlign.start,
+              style: CustomTextStyle.textFormFieldMedium.copyWith(color: Colors.grey, fontSize: 12),
             ),
-            Utils.getSizedBox(width: 16)
-          ],
-        ),
+          ),
+          Container(
+              margin: EdgeInsets.only(top: 10),
+              width: double.infinity,
+              height: 0.3,
+              color: Colors.grey.withOpacity(0.5)
+          )
+        ],
       ),
     );
   }
